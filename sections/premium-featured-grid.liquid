@@ -1,4 +1,5 @@
 {%- style -%}
+  /* 1. Page Width Logic */
   {%- if section.settings.page_width == 'full' -%}
     {%- assign max_w = '100%' -%}
   {%- elsif section.settings.page_width == 'wide' -%}
@@ -7,10 +8,29 @@
     {%- assign max_w = '1200px' -%}
   {%- endif -%}
 
+  /* 2. Image Shape Logic */
+  {%- if section.settings.image_shape == 'sharp' -%}
+    {%- assign shape_radius = '0px' -%}
+  {%- elsif section.settings.image_shape == 'circle' -%}
+    {%- assign shape_radius = '50%' -%}
+  {%- elsif section.settings.image_shape == 'arch' -%}
+    {%- assign shape_radius = '300px 300px 0 0' -%}
+  {%- else -%}
+    {%- assign shape_radius = section.settings.card_border_radius | append: 'px' -%}
+  {%- endif -%}
+
+  /* 3. Dynamic CSS Variables based on settings */
   #PremiumGrid-{{ section.id }} {
     background-color: {{ section.settings.bg_color }};
+    /* Avoid empty settings rendering issues */
     margin-top: {{ section.settings.margin_top }}px;
     margin-bottom: {{ section.settings.margin_bottom }}px;
+    
+    --grid-gap: {{ section.settings.grid_gap }}px;
+    --card-radius: {{ shape_radius }};
+    --badge-bg: {{ section.settings.badge_bg_color }};
+    --badge-text: {{ section.settings.badge_text_color }};
+    --price-color: {{ section.settings.price_color }};
   }
 
   #PremiumGrid-{{ section.id }} .pgrid-container {
@@ -19,9 +39,21 @@
     margin: 0 auto;
   }
 
+  /* 4. Image Aspect Ratio Logic */
+  {%- if section.settings.image_ratio == 'portrait' -%}
+    #PremiumGrid-{{ section.id }} .pgrid-image-wrap { aspect-ratio: 3 / 4; }
+  {%- elsif section.settings.image_ratio == 'square' -%}
+    #PremiumGrid-{{ section.id }} .pgrid-image-wrap { aspect-ratio: 1 / 1; }
+  {%- else -%}
+    #PremiumGrid-{{ section.id }} .pgrid-image-wrap { aspect-ratio: 4 / 3; }
+  {%- endif -%}
+
   @media screen and (max-width: 768px) {
     #PremiumGrid-{{ section.id }} .pgrid-container {
       padding: calc({{ section.settings.padding_top }}px / 2) 1.5rem calc({{ section.settings.padding_bottom }}px / 2) 1.5rem;
+    }
+    #PremiumGrid-{{ section.id }} {
+      --grid-gap: calc({{ section.settings.grid_gap }}px / 2);
     }
   }
 {%- endstyle -%}
@@ -47,18 +79,22 @@
       
       {% if collection != blank and collection.products_count > 0 %}
         {% for product in collection.products limit: section.settings.products_to_show %}
-          <div class="pgrid-item reveal-on-scroll" style="--anim-delay: {{ forloop.index | times: 0.1 }}s;">
-            <a href="{{ product.url }}" class="pgrid-card">
+          
+          <!-- Scroll Animation Wrapper -->
+          <div class="pgrid-item reveal-on-scroll anim-{{ section.settings.scroll_animation }}" style="--anim-delay: {{ forloop.index | times: 0.1 }}s;">
+            
+            <!-- Hover Animation Wrapper -->
+            <a href="{{ product.url }}" class="pgrid-card hover-{{ section.settings.hover_animation }}">
               
-              <!-- Image Wrapper (Hover Reveal) -->
+              <!-- Image Wrapper -->
               <div class="pgrid-image-wrap">
-                <img src="{{ product.featured_image | img_url: '600x800', crop: 'center' }}" alt="{{ product.title }}" class="pgrid-img-primary" loading="lazy">
+                <img src="{{ product.featured_image | img_url: '800x', crop: 'center' }}" alt="{{ product.title }}" class="pgrid-img-primary" loading="lazy">
                 
                 {% if product.images.size > 1 %}
-                  <img src="{{ product.images[1] | img_url: '600x800', crop: 'center' }}" alt="{{ product.title }}" class="pgrid-img-secondary" loading="lazy">
+                  <img src="{{ product.images[1] | img_url: '800x', crop: 'center' }}" alt="{{ product.title }}" class="pgrid-img-secondary" loading="lazy">
                 {% endif %}
                 
-                <div class="pgrid-badge" style="background: {{ section.settings.accent_color }}; color: #fff;">Voir Détails</div>
+                <div class="pgrid-badge">Voir Détails</div>
               </div>
 
               <!-- Product Info -->
@@ -72,11 +108,12 @@
         {% endfor %}
       {% else %}
         <!-- Placeholder for Editor -->
-        {% for i in (1..4) %}
-          <div class="pgrid-item reveal-on-scroll" style="--anim-delay: {{ forloop.index | times: 0.1 }}s;">
-            <div class="pgrid-card">
+        {% for i in (1..section.settings.products_to_show) %}
+          <div class="pgrid-item reveal-on-scroll anim-{{ section.settings.scroll_animation }}" style="--anim-delay: {{ forloop.index | times: 0.1 }}s;">
+            <div class="pgrid-card hover-{{ section.settings.hover_animation }}">
               <div class="pgrid-image-wrap">
                 {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+                <div class="pgrid-badge">Voir Détails</div>
               </div>
               <div class="pgrid-info" style="color: {{ section.settings.text_color }};">
                 <h3 class="pgrid-product-title">Pièce Originale {{ i }}</h3>
@@ -92,43 +129,113 @@
 </section>
 
 <style>
+  /* --- Premium Grid CSS --- */
   .premium-grid { width: 100%; font-family: 'Helvetica Neue', sans-serif; overflow: hidden; }
+  
+  /* Header */
   .pgrid-header { margin-bottom: 3rem; display: flex; flex-direction: column; gap: 1rem; }
   .pgrid-title { font-size: 2.5rem; font-weight: 700; margin: 0; letter-spacing: -0.02em; }
   .pgrid-view-all { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; font-weight: 600; display: inline-block; position: relative; align-self: inherit; }
   .pgrid-view-all::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform 0.4s ease; }
   .pgrid-view-all:hover::after { transform: scaleX(1); transform-origin: left; }
   
-  .pgrid-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
-  .pgrid-card { text-decoration: none; display: block; group: product; }
-  .pgrid-image-wrap { position: relative; width: 100%; aspect-ratio: 3 / 4; overflow: hidden; background: #f4f4f4; margin-bottom: 1.5rem; border-radius: 1rem; }
-  .pgrid-img-primary, .pgrid-img-secondary, .placeholder-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.6s ease, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1); }
+  /* Grid Layout */
+  .pgrid-wrapper { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: var(--grid-gap); 
+  }
+  
+  .pgrid-card { 
+    text-decoration: none; 
+    display: block; 
+    padding-bottom: 1rem;
+  }
+
+  /* Image Wrapper */
+  .pgrid-image-wrap { 
+    position: relative; 
+    width: 100%; 
+    overflow: hidden; 
+    background: #f4f4f4; 
+    margin-bottom: 1.5rem; 
+    border-radius: var(--card-radius); /* Shape applied here */
+    transition: border-radius 0.4s ease;
+  }
+  
+  .pgrid-img-primary, .pgrid-img-secondary, .placeholder-svg { 
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+    object-fit: cover; 
+    transition: opacity 0.6s ease, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1); 
+  }
   .pgrid-img-secondary { opacity: 0; z-index: 2; }
   
-  .pgrid-card:hover .pgrid-img-primary { transform: scale(1.05); }
-  .pgrid-card:hover .pgrid-img-secondary { opacity: 1; transform: scale(1.05); }
+  /* Badge */
+  .pgrid-badge { 
+    position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%) translateY(20px); 
+    padding: 0.8rem 1.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; 
+    font-weight: 600; opacity: 0; z-index: 3; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+    border-radius: 50px; white-space: nowrap; 
+    background: var(--badge-bg); color: var(--badge-text);
+  }
   
-  .pgrid-badge { position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%) translateY(20px); padding: 0.8rem 1.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; opacity: 0; z-index: 3; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 50px; white-space: nowrap; }
-  .pgrid-card:hover .pgrid-badge { opacity: 1; transform: translateX(-50%) translateY(0); }
-  
+  /* Product Info */
   .pgrid-info { text-align: center; }
   .pgrid-product-title { font-size: 1.1rem; font-weight: 600; margin: 0 0 0.5rem 0; }
-  .pgrid-product-price { font-size: 1rem; margin: 0; opacity: 0.8; font-weight: 500; }
+  .pgrid-product-price { font-size: 1rem; margin: 0; font-weight: 600; color: var(--price-color); }
+
+  /* =========================================
+     ANIMATIONS (Controlled by Shopify Editor)
+     ========================================= */
+
+  /* 1. Scroll Reveal Animations */
+  .reveal-on-scroll { 
+    opacity: 0; 
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); 
+    transition-delay: var(--anim-delay); 
+  }
   
-  .reveal-on-scroll { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: var(--anim-delay); }
-  .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
-  
+  .anim-fade-up { transform: translateY(50px); }
+  .anim-fade-in { transform: translateY(0); }
+  .anim-zoom-in { transform: scale(0.9); }
+  .anim-slide-left { transform: translateX(50px); }
+  .anim-slide-right { transform: translateX(-50px); }
+
+  .reveal-on-scroll.is-visible { 
+    opacity: 1; 
+    transform: translate(0) scale(1); 
+  }
+
+  /* 2. Hover Animations */
+  /* Zoom Image */
+  .hover-zoom-image .pgrid-img-primary { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+  .hover-zoom-image:hover .pgrid-img-primary { transform: scale(1.08); }
+  .hover-zoom-image:hover .pgrid-img-secondary { opacity: 1; transform: scale(1.08); }
+  .hover-zoom-image:hover .pgrid-badge { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* Lift Card */
+  .hover-lift-card { transition: transform 0.4s ease; }
+  .hover-lift-card:hover { transform: translateY(-12px); }
+  .hover-lift-card:hover .pgrid-img-secondary { opacity: 1; }
+  .hover-lift-card:hover .pgrid-badge { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* Glow / Shadow */
+  .hover-glow { transition: box-shadow 0.4s ease, transform 0.4s ease; }
+  .hover-glow:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.08); transform: translateY(-5px); }
+  .hover-glow:hover .pgrid-img-secondary { opacity: 1; }
+  .hover-glow:hover .pgrid-badge { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* Responsive */
   @media (max-width: 768px) {
-    .pgrid-wrapper { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .pgrid-wrapper { grid-template-columns: repeat(2, 1fr); }
     .pgrid-title { font-size: 2rem; }
     .pgrid-badge { display: none; }
-    .pgrid-image-wrap { border-radius: 0.5rem; }
   }
 </style>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+    const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
     const observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -191,12 +298,83 @@
     },
     {
       "type": "header",
+      "content": "Animations (Floating & Hover)"
+    },
+    {
+      "type": "select",
+      "id": "scroll_animation",
+      "label": "Scroll Reveal Animation",
+      "options": [
+        { "value": "fade-up", "label": "Fade Up (Float up)" },
+        { "value": "fade-in", "label": "Simple Fade In" },
+        { "value": "zoom-in", "label": "Zoom In" },
+        { "value": "slide-left", "label": "Slide from Left" },
+        { "value": "slide-right", "label": "Slide from Right" }
+      ],
+      "default": "fade-up"
+    },
+    {
+      "type": "select",
+      "id": "hover_animation",
+      "label": "Product Hover Effect",
+      "options": [
+        { "value": "zoom-image", "label": "Zoom Image Inside" },
+        { "value": "lift-card", "label": "Lift Entire Card Up" },
+        { "value": "glow", "label": "Lift + Soft Shadow Glow" },
+        { "value": "none", "label": "None" }
+      ],
+      "default": "zoom-image"
+    },
+    {
+      "type": "header",
+      "content": "Grid CSS & Styling"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image Aspect Ratio",
+      "options": [
+        { "value": "portrait", "label": "Portrait (3:4) - Best for Fashion" },
+        { "value": "square", "label": "Square (1:1)" },
+        { "value": "landscape", "label": "Landscape (4:3) - Best for Car Parts" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "select",
+      "id": "image_shape",
+      "label": "Image Shape",
+      "options": [
+        { "value": "sharp", "label": "Sharp Rectangle (90°)" },
+        { "value": "rounded", "label": "Custom Rounded (Use slider below)" },
+        { "value": "circle", "label": "Circle / Oval" },
+        { "value": "arch", "label": "Modern Arch (Tombstone)" }
+      ],
+      "default": "rounded"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0, "max": 60, "step": 2, "unit": "px",
+      "label": "Custom Border Radius",
+      "info": "Only applies if 'Custom Rounded' is selected above.",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 10, "max": 60, "step": 2, "unit": "px",
+      "label": "Space between products",
+      "default": 32
+    },
+    {
+      "type": "header",
       "content": "Colors"
     },
     {
       "type": "color",
       "id": "bg_color",
-      "label": "Background Color",
+      "label": "Section Background",
       "default": "#ffffff"
     },
     {
@@ -208,8 +386,26 @@
     {
       "type": "color",
       "id": "accent_color",
-      "label": "Accent Color",
+      "label": "Accent Color (Links)",
       "default": "#B80000"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Hover Badge Background",
+      "default": "#B80000"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Hover Badge Text",
+      "default": "#ffffff"
     },
     {
       "type": "header",
