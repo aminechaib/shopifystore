@@ -1,0 +1,19 @@
+/* --- CUSTOM CLOTHING STORE OVERRIDES --- */
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  letter-spacing: 0.5px;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Sharp edges for all elements */
+* {
+  border-radius: 0 !important; 
+}
+
+/* Minimalist typography */
+h1, h2, h3, h4, h5, h6 {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+}

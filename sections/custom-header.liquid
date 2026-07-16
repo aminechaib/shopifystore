@@ -1,0 +1,373 @@
+{% comment %}
+  AC Fashion — Header + Nav (grid mega-menu)
+  ------------------------------------------------------------------
+  Drop this file into: sections/header-ac-fashion.liquid
+  Then add it to your theme via Online Store > Themes > Customize,
+  or reference it in a JSON template, e.g. templates/index.json:
+
+    "sections": {
+      "header-ac-fashion": { "type": "header-ac-fashion" }
+    }
+
+  Everything below is driven by:
+   - Theme editor settings (store name, logo, announcement text)
+   - "Mega menu" blocks, each pointing at a real Shopify collection —
+     the product grid pulls live products from that collection, so
+     updating the collection updates the menu automatically.
+   - "Simple link" blocks for plain nav items (New in, Sale, etc.)
+   - Native cart/customer objects for the cart count + account link
+{% endcomment %}
+
+<style>
+  #shopify-section-{{ section.id }} .acf-header{
+    --acf-paper:#FAF8F3;
+    --acf-ink:#17140F;
+    --acf-ink-soft:#3D3A34;
+    --acf-stone:#8C8577;
+    --acf-hairline:#E4DFD3;
+    --acf-oxblood:#6D2331;
+    font-family:'Inter',sans-serif;
+    background:var(--acf-paper);
+    color:var(--acf-ink);
+  }
+  #shopify-section-{{ section.id }} *{box-sizing:border-box;}
+  #shopify-section-{{ section.id }} a{color:inherit; text-decoration:none;}
+  #shopify-section-{{ section.id }} button{font-family:inherit; background:none; border:none; cursor:pointer; color:inherit;}
+
+  #shopify-section-{{ section.id }} .acf-announce{
+    background:var(--acf-ink); color:var(--acf-paper); text-align:center;
+    font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase; padding:8px 12px; overflow:hidden; white-space:nowrap;
+  }
+  #shopify-section-{{ section.id }} .acf-announce span{
+    display:inline-block; padding-left:100%; animation:acfScroll 18s linear infinite;
+  }
+  @keyframes acfScroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}
+
+  #shopify-section-{{ section.id }} .acf-header{position:relative; border-bottom:1px solid var(--acf-hairline);}
+  #shopify-section-{{ section.id }} .acf-inner{
+    max-width:1320px; margin:0 auto; display:flex; align-items:center;
+    justify-content:space-between; padding:16px 32px; gap:24px;
+  }
+  #shopify-section-{{ section.id }} .acf-logo{
+    font-family:'Fraunces',serif; font-weight:500; font-size:25px; letter-spacing:-.01em;
+    display:flex; align-items:center; gap:2px; flex:0 0 auto;
+    animation:acfFloat 4.5s ease-in-out infinite;
+  }
+  #shopify-section-{{ section.id }} .acf-logo em{font-style:italic; color:var(--acf-oxblood);}
+  #shopify-section-{{ section.id }} .acf-logo img{height:32px; width:auto; display:block; animation:none;}
+  @keyframes acfFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-3px);}}
+
+  #shopify-section-{{ section.id }} .acf-nav{display:flex; align-items:center; gap:34px; flex:1 1 auto; justify-content:center;}
+  #shopify-section-{{ section.id }} .acf-nav-item{position:relative; display:flex; align-items:center;}
+  #shopify-section-{{ section.id }} .acf-nav-item > button,
+  #shopify-section-{{ section.id }} .acf-nav-item > a{
+    font-size:14px; font-weight:500; letter-spacing:.01em; display:flex; align-items:center;
+    gap:6px; height:22px; position:relative; white-space:nowrap;
+  }
+  #shopify-section-{{ section.id }} .acf-nav-item > button::after,
+  #shopify-section-{{ section.id }} .acf-nav-item > a::after{
+    content:''; position:absolute; left:0; right:0; bottom:-4px; height:1px;
+    background:var(--acf-ink); transform:scaleX(0); transform-origin:left; transition:transform .25s ease;
+  }
+  #shopify-section-{{ section.id }} .acf-nav-item > button:hover::after,
+  #shopify-section-{{ section.id }} .acf-nav-item > a:hover::after{transform:scaleX(1);}
+  #shopify-section-{{ section.id }} .acf-caret{width:9px; height:9px; flex:0 0 auto; transition:transform .2s ease;}
+  #shopify-section-{{ section.id }} .acf-nav-item.open .acf-caret{transform:rotate(180deg);}
+
+  #shopify-section-{{ section.id }} .acf-icons{display:flex; align-items:center; gap:20px; flex:0 0 auto;}
+  #shopify-section-{{ section.id }} .acf-icon-btn{width:20px; height:20px; display:flex; align-items:center; justify-content:center; position:relative;}
+  #shopify-section-{{ section.id }} .acf-icon-btn svg{width:100%; height:100%; stroke:var(--acf-ink);}
+  #shopify-section-{{ section.id }} .acf-icon-btn.cart{animation:acfFloat 3.6s ease-in-out infinite; animation-delay:.4s;}
+  #shopify-section-{{ section.id }} .acf-cart-count{
+    position:absolute; top:-8px; right:-10px; background:var(--acf-oxblood); color:var(--acf-paper);
+    font-size:9px; font-family:'Space Mono',monospace; width:15px; height:15px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  #shopify-section-{{ section.id }} .acf-menu-toggle{display:none;}
+
+  #shopify-section-{{ section.id }} .acf-mega{
+    position:absolute; top:calc(100% + 24px); left:50%; transform:translate(-50%,-8px);
+    background:var(--acf-paper); border:1px solid var(--acf-hairline); border-radius:6px;
+    box-shadow:0 30px 60px rgba(23,20,15,.1);
+    opacity:0; visibility:hidden; transition:opacity .25s ease, transform .25s ease, visibility .25s;
+    z-index:40; width:760px;
+  }
+  #shopify-section-{{ section.id }} .acf-nav-item.open .acf-mega{opacity:1; visibility:visible; transform:translate(-50%,0);}
+  #shopify-section-{{ section.id }} .acf-mega-inner{display:grid; grid-template-columns:200px 1fr; gap:40px; padding:36px;}
+  #shopify-section-{{ section.id }} .acf-mega-links{display:flex; flex-direction:column; gap:13px; border-right:1px solid var(--acf-hairline); padding-right:28px;}
+  #shopify-section-{{ section.id }} .acf-eyebrow{font-family:'Space Mono',monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--acf-stone);}
+  #shopify-section-{{ section.id }} .acf-mega-links a{font-size:14px; color:var(--acf-ink-soft); transition:color .15s ease;}
+  #shopify-section-{{ section.id }} .acf-mega-links a:hover{color:var(--acf-oxblood);}
+  #shopify-section-{{ section.id }} .acf-view-all{color:var(--acf-oxblood); font-weight:500; margin-top:4px;}
+
+  #shopify-section-{{ section.id }} .acf-mega-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+  #shopify-section-{{ section.id }} .acf-frame{position:relative; display:block; opacity:0; transform:translateY(10px);}
+  #shopify-section-{{ section.id }} .acf-nav-item.open .acf-frame{animation:acfFrameIn .5s ease forwards;}
+  #shopify-section-{{ section.id }} .acf-nav-item.open .acf-frame:nth-child(1){animation-delay:.05s;}
+  #shopify-section-{{ section.id }} .acf-nav-item.open .acf-frame:nth-child(2){animation-delay:.12s;}
+  #shopify-section-{{ section.id }} .acf-nav-item.open .acf-frame:nth-child(3){animation-delay:.19s;}
+  #shopify-section-{{ section.id }} .acf-nav-item.open .acf-frame:nth-child(4){animation-delay:.26s;}
+  @keyframes acfFrameIn{to{opacity:1; transform:translateY(0);}}
+
+  #shopify-section-{{ section.id }} .acf-frame-media{
+    aspect-ratio:3/4; background:var(--acf-hairline); border-radius:4px; overflow:hidden;
+    position:relative; margin-bottom:9px; animation:acfBob 5s ease-in-out infinite;
+  }
+  #shopify-section-{{ section.id }} .acf-frame:nth-child(2) .acf-frame-media{animation-delay:.4s;}
+  #shopify-section-{{ section.id }} .acf-frame:nth-child(3) .acf-frame-media{animation-delay:.8s;}
+  #shopify-section-{{ section.id }} .acf-frame:nth-child(4) .acf-frame-media{animation-delay:1.2s;}
+  @keyframes acfBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+  #shopify-section-{{ section.id }} .acf-frame-media img{width:100%; height:100%; object-fit:cover; filter:grayscale(12%); transition:transform .5s ease;}
+  #shopify-section-{{ section.id }} .acf-frame:hover .acf-frame-media img{transform:scale(1.05);}
+  #shopify-section-{{ section.id }} .acf-frame-num{
+    position:absolute; top:8px; left:8px; font-family:'Space Mono',monospace; font-size:10px;
+    color:var(--acf-paper); background:rgba(23,20,15,.55); padding:2px 6px; border-radius:2px;
+  }
+  #shopify-section-{{ section.id }} .acf-frame-label{font-size:13px; font-weight:500;}
+  #shopify-section-{{ section.id }} .acf-frame-sub{font-family:'Space Mono',monospace; font-size:10px; color:var(--acf-stone); text-transform:uppercase; margin-top:2px;}
+
+  @media (prefers-reduced-motion:reduce){
+    #shopify-section-{{ section.id }} .acf-logo,
+    #shopify-section-{{ section.id }} .acf-icon-btn.cart,
+    #shopify-section-{{ section.id }} .acf-frame-media,
+    #shopify-section-{{ section.id }} .acf-announce span{animation:none !important;}
+  }
+
+  #shopify-section-{{ section.id }} .acf-mobile-panel{display:none;}
+  @media (max-width:900px){
+    #shopify-section-{{ section.id }} .acf-inner{padding:14px 20px;}
+    #shopify-section-{{ section.id }} .acf-nav{display:none;}
+    #shopify-section-{{ section.id }} .acf-icons{gap:14px;}
+    #shopify-section-{{ section.id }} .acf-menu-toggle{display:flex; align-items:center; justify-content:center; width:22px; height:22px;}
+    #shopify-section-{{ section.id }} .acf-menu-toggle svg{width:100%; height:100%;}
+    #shopify-section-{{ section.id }} .acf-logo{font-size:20px;}
+    #shopify-section-{{ section.id }} .acf-mobile-panel{
+      display:block; position:fixed; inset:0; background:var(--acf-paper); z-index:100;
+      transform:translateX(-100%); transition:transform .3s ease; overflow-y:auto;
+    }
+    #shopify-section-{{ section.id }} .acf-mobile-panel.open{transform:translateX(0);}
+    #shopify-section-{{ section.id }} .acf-mobile-header{display:flex; justify-content:space-between; align-items:center; padding:18px 20px; border-bottom:1px solid var(--acf-hairline);}
+    #shopify-section-{{ section.id }} .acf-mobile-close svg{width:20px; height:20px;}
+    #shopify-section-{{ section.id }} .acf-mobile-links{padding:12px 20px;}
+    #shopify-section-{{ section.id }} .acf-mobile-links details{border-bottom:1px solid var(--acf-hairline);}
+    #shopify-section-{{ section.id }} .acf-mobile-links summary{list-style:none; padding:16px 0; font-size:15px; font-weight:500; display:flex; justify-content:space-between; align-items:center; cursor:pointer;}
+    #shopify-section-{{ section.id }} .acf-mobile-links summary::-webkit-details-marker{display:none;}
+    #shopify-section-{{ section.id }} .acf-mobile-sub{padding:0 0 16px 4px; display:flex; flex-direction:column; gap:12px;}
+    #shopify-section-{{ section.id }} .acf-mobile-sub a{font-size:14px; color:var(--acf-ink-soft);}
+    #shopify-section-{{ section.id }} .acf-mobile-links > a{display:block; padding:16px 0; font-size:15px; font-weight:500; border-bottom:1px solid var(--acf-hairline);}
+  }
+</style>
+
+{% if section.settings.show_announcement and section.settings.announcement_text != blank %}
+  <div class="acf-announce">
+    <span>{{ section.settings.announcement_text }}</span>
+  </div>
+{% endif %}
+
+<header class="acf-header">
+  <div class="acf-inner">
+
+    <button class="acf-menu-toggle" aria-label="Open menu" data-acf-mobile-open>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+
+    <a href="{{ routes.root_url }}" class="acf-logo">
+      {% if section.settings.logo != blank %}
+        <img src="{{ section.settings.logo | image_url: width: 200 }}" alt="{{ section.settings.store_name | default: shop.name }}">
+      {% else %}
+        {{ section.settings.store_name | default: shop.name }}
+      {% endif %}
+    </a>
+
+    <nav class="acf-nav">
+      {% for block in section.blocks %}
+
+        {% if block.type == 'mega_menu' %}
+          {% assign col = block.settings.collection %}
+          <div class="acf-nav-item" id="acf-nav-{{ forloop.index }}" {{ block.shopify_attributes }}>
+            <button data-acf-toggle="acf-nav-{{ forloop.index }}">
+              {{ block.settings.title }}
+              <svg class="acf-caret" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M1 3l4 4 4-4"/></svg>
+            </button>
+            <div class="acf-mega">
+              <div class="acf-mega-inner">
+                <div class="acf-mega-links">
+                  <div class="acf-eyebrow">Categories</div>
+                  {% if block.settings.menu != blank %}
+                    {% for link in block.settings.menu.links %}
+                      <a href="{{ link.url }}">{{ link.title }}</a>
+                    {% endfor %}
+                  {% endif %}
+                  {% if col != blank %}
+                    <a class="acf-view-all" href="{{ col.url }}">View all →</a>
+                  {% endif %}
+                </div>
+                <div class="acf-mega-grid">
+                  {% if col != blank %}
+                    {% assign product_limit = block.settings.product_count | default: 4 %}
+                    {% for product in col.products limit: product_limit %}
+                      <a class="acf-frame" href="{{ product.url }}">
+                        <div class="acf-frame-media">
+                          <span class="acf-frame-num">0{{ forloop.index }}</span>
+                          {% if product.featured_image %}
+                            <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title }}" loading="lazy">
+                          {% endif %}
+                        </div>
+                        <div class="acf-frame-label">{{ product.title }}</div>
+                        <div class="acf-frame-sub">{{ product.type | default: col.title }}</div>
+                      </a>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+        {% elsif block.type == 'simple_link' %}
+          <a href="{{ block.settings.url }}" {% if block.settings.accent %}style="color:var(--acf-oxblood);"{% endif %} {{ block.shopify_attributes }}>
+            {{ block.settings.title }}
+          </a>
+        {% endif %}
+
+      {% endfor %}
+    </nav>
+
+    <div class="acf-icons">
+      <a href="{{ routes.search_url }}" class="acf-icon-btn" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </a>
+      <a href="{{ routes.account_url }}" class="acf-icon-btn" aria-label="Account">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </a>
+      <a href="{{ routes.cart_url }}" class="acf-icon-btn cart" aria-label="Cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M6 2l1.5 4h9L18 2"/><path d="M3.5 8h17l-1.4 11.2a2 2 0 0 1-2 1.8H6.9a2 2 0 0 1-2-1.8L3.5 8z"/></svg>
+        <span class="acf-cart-count">{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="acf-mobile-panel" data-acf-mobile-panel>
+  <div class="acf-mobile-header">
+    <span class="acf-logo" style="font-size:19px; animation:none;">{{ section.settings.store_name | default: shop.name }}</span>
+    <button class="acf-mobile-close" aria-label="Close menu" data-acf-mobile-close>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg>
+    </button>
+  </div>
+  <div class="acf-mobile-links">
+    {% for block in section.blocks %}
+      {% if block.type == 'mega_menu' %}
+        <details>
+          <summary>{{ block.settings.title }} <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M1 3l4 4 4-4"/></svg></summary>
+          <div class="acf-mobile-sub">
+            {% if block.settings.menu != blank %}
+              {% for link in block.settings.menu.links %}
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </details>
+      {% elsif block.type == 'simple_link' %}
+        <a href="{{ block.settings.url }}" {% if block.settings.accent %}style="color:var(--acf-oxblood);"{% endif %}>{{ block.settings.title }}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+(function(){
+  var root = document.getElementById('shopify-section-{{ section.id }}');
+  if(!root) return;
+
+  root.querySelectorAll('[data-acf-toggle]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var id = btn.getAttribute('data-acf-toggle');
+      var el = document.getElementById(id);
+      var wasOpen = el.classList.contains('open');
+      root.querySelectorAll('.acf-nav-item.open').forEach(function(n){ n.classList.remove('open'); });
+      if(!wasOpen){ el.classList.add('open'); }
+    });
+  });
+
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.acf-nav-item')){
+      root.querySelectorAll('.acf-nav-item.open').forEach(function(n){ n.classList.remove('open'); });
+    }
+  });
+
+  var panel = root.querySelector('[data-acf-mobile-panel]');
+  var openBtn = root.querySelector('[data-acf-mobile-open]');
+  var closeBtn = root.querySelector('[data-acf-mobile-close]');
+  if(openBtn) openBtn.addEventListener('click', function(){ panel.classList.add('open'); });
+  if(closeBtn) closeBtn.addEventListener('click', function(){ panel.classList.remove('open'); });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){
+      root.querySelectorAll('.acf-nav-item.open').forEach(function(n){ n.classList.remove('open'); });
+      panel.classList.remove('open');
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "AC Fashion Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "store_name",
+      "label": "Store name",
+      "default": "AC Fashion"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo (optional, overrides store name text)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show announcement bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "Free shipping on orders over $120 — New arrivals dropped weekly"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mega_menu",
+      "name": "Mega menu category",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Menu title", "default": "Shop" },
+        { "type": "collection", "id": "collection", "label": "Collection (drives the product grid)" },
+        { "type": "range", "id": "product_count", "label": "Products to show", "min": 2, "max": 4, "step": 1, "default": 4 },
+        { "type": "link_list", "id": "menu", "label": "Subcategory links (optional menu)" }
+      ]
+    },
+    {
+      "type": "simple_link",
+      "name": "Simple link",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Label", "default": "New in" },
+        { "type": "url", "id": "url", "label": "Link" },
+        { "type": "checkbox", "id": "accent", "label": "Highlight in accent color", "default": false }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "mega_menu", "settings": { "title": "Shop" } },
+      { "type": "mega_menu", "settings": { "title": "Women" } },
+      { "type": "mega_menu", "settings": { "title": "Men" } },
+      { "type": "simple_link", "settings": { "title": "New in" } },
+      { "type": "simple_link", "settings": { "title": "Sale", "accent": true } }
+    ]
+  }
+}
+{% endschema %}

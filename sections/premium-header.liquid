@@ -1,0 +1,490 @@
+{%- style -%}
+  {%- if section.settings.page_width == 'full' -%}
+    {%- assign max_w = '100%' -%}
+  {%- elsif section.settings.page_width == 'wide' -%}
+    {%- assign max_w = '1600px' -%}
+  {%- else -%}
+    {%- assign max_w = '1200px' -%}
+  {%- endif -%}
+
+  :root {
+    /* Colors */
+    --ph-bg-top: {{ section.settings.bg_color_top }};
+    --ph-text-top: {{ section.settings.text_color_top }};
+    --ph-bg-scrolled: {{ section.settings.bg_color_scrolled }};
+    --ph-text-scrolled: {{ section.settings.text_color_scrolled }};
+    --ph-accent: {{ section.settings.accent_color }};
+    
+    /* Vertical Spacing */
+    --ph-pad-top: {{ section.settings.padding_top }}px;
+    --ph-pad-bot: {{ section.settings.padding_bottom }}px;
+
+    /* Horizontal Spacing */
+    --ph-max-width: {{ max_w }};
+    --ph-edge-pad: {{ section.settings.edge_spacing }}px;
+    --ph-menu-gap: {{ section.settings.menu_spacing }}px;
+    --ph-icon-gap: {{ section.settings.icon_spacing }}px;
+  }
+
+  #PremiumHeader-{{ section.id }} {
+    margin-top: {{ section.settings.margin_top }}px;
+    margin-bottom: {{ section.settings.margin_bottom }}px;
+  }
+{%- endstyle -%}
+
+<header id="PremiumHeader-{{ section.id }}" class="premium-header hover-style-{{ section.settings.link_hover_style }} scroll-style-{{ section.settings.scroll_behavior }}">
+  <div class="ph-container">
+    
+    <!-- Logo (Far Left) -->
+    <div class="ph-logo">
+      <a href="{{ routes.root_url }}">
+        {% if section.settings.logo != blank %}
+          <img src="{{ section.settings.logo | img_url: 'master' }}" alt="{{ shop.name }}" style="width: {{ section.settings.logo_width }}px;" class="ph-logo-img">
+        {% else %}
+          <span class="ph-logo-text">{{ shop.name }}</span>
+        {% endif %}
+      </a>
+    </div>
+
+    <!-- Right Side Group (Menu + Icons + Button) -->
+    <div class="ph-right-group">
+      
+      <!-- Desktop Nav -->
+      <nav class="ph-nav desktop-only">
+        <ul class="ph-nav-list">
+          {% for link in linklists[section.settings.menu].links %}
+            <li class="ph-nav-item">
+              <a href="{{ link.url }}" class="ph-nav-link">
+                <span class="link-text">{{ link.title }}</span>
+                {% if section.settings.link_hover_style == 'split' %}
+                  <span class="link-hover-text" aria-hidden="true">{{ link.title }}</span>
+                {% endif %}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+
+      <!-- Actions (Search, Cart, Button) -->
+      <div class="ph-actions">
+        <a href="{{ routes.search_url }}" class="ph-icon desktop-only">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </a>
+        
+        <a href="{{ routes.cart_url }}" class="ph-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="ph-cart-dot {% if cart.item_count > 0 %}is-active{% endif %}"></span>
+        </a>
+
+        {% if section.settings.show_button %}
+          <a href="{{ section.settings.button_link }}" class="ph-btn desktop-only">
+            {{ section.settings.button_text }}
+          </a>
+        {% endif %}
+
+        <button class="ph-menu-toggle mobile-only" id="MobileMenuToggle-{{ section.id }}">
+          <span class="ph-hamburger"></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Fullscreen Mobile Menu -->
+  <div class="ph-mobile-overlay" id="MobileOverlay-{{ section.id }}">
+    <div class="ph-mobile-inner">
+      <ul class="ph-mobile-nav">
+        {% for link in linklists[section.settings.menu].links %}
+          <li style="--anim-order: {{ forloop.index }};">
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+        {% endfor %}
+        {% if section.settings.show_button %}
+          <li style="--anim-order: 99;">
+            <a href="{{ section.settings.button_link }}" class="ph-mobile-btn">{{ section.settings.button_text }}</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</header>
+
+<style>
+  /* --- Base Header Styles --- */
+  .premium-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    background: var(--ph-bg-top);
+    color: var(--ph-text-top);
+    transition: background 0.4s ease, color 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: 'Helvetica Neue', sans-serif;
+  }
+
+  /* Layout: Logo Left, Everything else Right */
+  .ph-container {
+    display: flex;
+    justify-content: space-between; /* Pushes Logo left, Right Group right */
+    align-items: center;
+    padding: var(--ph-pad-top) var(--ph-edge-pad) var(--ph-pad-bot) var(--ph-edge-pad);
+    max-width: var(--ph-max-width);
+    margin: 0 auto;
+    transition: padding 0.4s ease;
+  }
+
+  .ph-right-group {
+    display: flex;
+    align-items: center;
+    gap: 3rem; /* Space between the Menu Links and the Icons/Button */
+  }
+
+  /* --- Scroll Behaviors --- */
+  .premium-header.is-scrolled {
+    background: var(--ph-bg-scrolled);
+    color: var(--ph-text-scrolled);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  }
+  
+  .premium-header.is-scrolled .ph-container {
+    padding: calc(var(--ph-pad-top) * 0.6) var(--ph-edge-pad) calc(var(--ph-pad-bot) * 0.6) var(--ph-edge-pad);
+  }
+
+  .premium-header.scroll-style-glass.is-scrolled {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .premium-header.scroll-style-hide.is-hidden {
+    transform: translateY(-100%);
+  }
+
+  /* --- Logo --- */
+  .ph-logo a { text-decoration: none; color: inherit; }
+  .ph-logo-text { font-size: 1.5rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin: 0; }
+  .ph-logo-img { display: block; transition: transform 0.4s ease; }
+  .premium-header.is-scrolled .ph-logo-img { transform: scale(0.9); }
+
+  /* --- Navigation --- */
+  .ph-nav-list { display: flex; gap: var(--ph-menu-gap); list-style: none; margin: 0; padding: 0; }
+  .ph-nav-link {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Hover Style: Split */
+  .hover-style-split .ph-nav-link { overflow: hidden; height: 1.2em; }
+  .hover-style-split .ph-nav-link span { display: block; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .hover-style-split .link-hover-text { position: absolute; top: 100%; left: 0; font-weight: 600; color: var(--ph-accent); }
+  .hover-style-split .ph-nav-link:hover .link-text { transform: translateY(-100%); }
+  .hover-style-split .ph-nav-link:hover .link-hover-text { transform: translateY(-100%); }
+
+  /* Hover Style: Underline */
+  .hover-style-underline .ph-nav-link::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px;
+    background: var(--ph-accent); transform: scaleX(0); transform-origin: right; transition: transform 0.4s ease;
+  }
+  .hover-style-underline .ph-nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+  .hover-style-underline .ph-nav-link:hover { color: var(--ph-accent); }
+
+  /* Hover Style: Fade */
+  .hover-style-fade .ph-nav-link { transition: color 0.3s ease, opacity 0.3s ease; }
+  .hover-style-fade .ph-nav-link:hover { color: var(--ph-accent); opacity: 0.7; }
+
+  /* --- Actions & Button --- */
+  .ph-actions { display: flex; align-items: center; gap: var(--ph-icon-gap); }
+  .ph-icon { position: relative; color: inherit; transition: transform 0.3s ease, color 0.3s ease; display: flex; }
+  .ph-icon:hover { transform: scale(1.1); color: var(--ph-accent); }
+  
+  .ph-cart-dot {
+    position: absolute; top: -2px; right: -4px; width: 8px; height: 8px;
+    background: var(--ph-accent); border-radius: 50%; opacity: 0; transform: scale(0); transition: all 0.3s ease;
+  }
+  .ph-cart-dot.is-active { opacity: 1; transform: scale(1); }
+
+  .ph-btn {
+    background: var(--ph-accent);
+    color: #ffffff;
+    padding: 0.6rem 1.5rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-left: 0.5rem;
+  }
+  .ph-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(184, 0, 0, 0.3);
+    color: #ffffff;
+  }
+
+  /* --- Mobile Menu --- */
+  .ph-menu-toggle { background: none; border: none; cursor: pointer; width: 24px; height: 24px; position: relative; z-index: 10000; }
+  .ph-hamburger, .ph-hamburger::before, .ph-hamburger::after {
+    display: block; width: 100%; height: 1.5px; background: currentColor; position: absolute; transition: all 0.3s ease;
+  }
+  .ph-hamburger { top: 50%; transform: translateY(-50%); }
+  .ph-hamburger::before { content: ''; top: -6px; }
+  .ph-hamburger::after { content: ''; bottom: -6px; }
+  .ph-menu-toggle.is-active .ph-hamburger { background: transparent; }
+  .ph-menu-toggle.is-active .ph-hamburger::before { top: 0; transform: rotate(45deg); background: #111; }
+  .ph-menu-toggle.is-active .ph-hamburger::after { bottom: 0; transform: rotate(-45deg); background: #111; }
+
+  .ph-mobile-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #fff;
+    z-index: 9998; opacity: 0; visibility: hidden; transition: all 0.5s ease;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ph-mobile-overlay.is-open { opacity: 1; visibility: visible; }
+  
+  .ph-mobile-nav { list-style: none; padding: 0; text-align: center; }
+  .ph-mobile-nav li { overflow: hidden; margin-bottom: 2rem; }
+  .ph-mobile-nav a {
+    display: block; font-size: 2.5rem; font-weight: 400; text-transform: uppercase;
+    text-decoration: none; color: #111; transform: translateY(100%); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .ph-mobile-btn {
+    color: var(--ph-accent) !important;
+    font-weight: 700 !important;
+  }
+  .ph-mobile-overlay.is-open .ph-mobile-nav a {
+    transform: translateY(0); transition-delay: calc(var(--anim-order) * 0.1s);
+  }
+
+  /* Responsive */
+  .mobile-only { display: none; }
+  @media (max-width: 990px) {
+    .desktop-only { display: none !important; }
+    .mobile-only { display: block; }
+    .ph-container { padding: var(--ph-pad-top) 1.5rem var(--ph-pad-bot) 1.5rem; }
+    .premium-header.is-scrolled .ph-container { padding: calc(var(--ph-pad-top) * 0.6) 1.5rem calc(var(--ph-pad-bot) * 0.6) 1.5rem; }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const header = document.getElementById('PremiumHeader-{{ section.id }}');
+    const menuToggle = document.getElementById('MobileMenuToggle-{{ section.id }}');
+    const mobileOverlay = document.getElementById('MobileOverlay-{{ section.id }}');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      if (currentScroll > 30) {
+        header.classList.add('is-scrolled');
+        if (header.classList.contains('scroll-style-hide')) {
+          if (currentScroll > lastScroll && currentScroll > 100) {
+            header.classList.add('is-hidden');
+          } else {
+            header.classList.remove('is-hidden');
+          }
+        }
+      } else {
+        header.classList.remove('is-scrolled');
+        header.classList.remove('is-hidden');
+      }
+      lastScroll = currentScroll;
+    });
+
+    if(menuToggle) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('is-active');
+        mobileOverlay.classList.toggle('is-open');
+        document.body.style.overflow = mobileOverlay.classList.contains('is-open') ? 'hidden' : '';
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Premium Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 200,
+      "step": 5,
+      "default": 100,
+      "unit": "px",
+      "label": "Logo width"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Contact Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show Contact Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Nous Contacter"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Horizontal Spacing & Width"
+    },
+    {
+      "type": "select",
+      "id": "page_width",
+      "label": "Header Width",
+      "options": [
+        { "value": "full", "label": "Full Width (100%)" },
+        { "value": "wide", "label": "Wide (1600px)" },
+        { "value": "standard", "label": "Standard (1200px)" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "edge_spacing",
+      "min": 0, "max": 100, "step": 2, "unit": "px",
+      "label": "Distance from screen edges",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "menu_spacing",
+      "min": 10, "max": 100, "step": 2, "unit": "px",
+      "label": "Space between menu links",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "icon_spacing",
+      "min": 10, "max": 60, "step": 2, "unit": "px",
+      "label": "Space between icons",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Animations & Behaviors"
+    },
+    {
+      "type": "select",
+      "id": "link_hover_style",
+      "label": "Link Hover Animation",
+      "options": [
+        { "value": "split", "label": "Split Text (Slide Up)" },
+        { "value": "underline", "label": "Animated Underline" },
+        { "value": "fade", "label": "Smooth Fade" }
+      ],
+      "default": "split"
+    },
+    {
+      "type": "select",
+      "id": "scroll_behavior",
+      "label": "Scroll Behavior",
+      "options": [
+        { "value": "glass", "label": "Glassmorphism (Blur)" },
+        { "value": "solid", "label": "Solid Color" },
+        { "value": "hide", "label": "Hide on scroll down, show on scroll up" }
+      ],
+      "default": "glass"
+    },
+    {
+      "type": "header",
+      "content": "Colors (Top of Page)"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_top",
+      "label": "Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "text_color_top",
+      "label": "Text & Icon Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Colors (When Scrolled)"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_scrolled",
+      "label": "Background Color",
+      "default": "rgba(255, 255, 255, 0.9)"
+    },
+    {
+      "type": "color",
+      "id": "text_color_scrolled",
+      "label": "Text & Icon Color",
+      "default": "#024158"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color (Hover & Cart Dot)",
+      "default": "#B80000"
+    },
+    {
+      "type": "header",
+      "content": "Spacing (Vertical)"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0, "max": 100, "step": 5, "unit": "px",
+      "label": "Margin Top", "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0, "max": 100, "step": 5, "unit": "px",
+      "label": "Margin Bottom", "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0, "max": 100, "step": 5, "unit": "px",
+      "label": "Padding Top", "default": 25
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0, "max": 100, "step": 5, "unit": "px",
+      "label": "Padding Bottom", "default": 25
+    }
+  ],
+  "presets": [
+    {
+      "name": "Premium Header"
+    }
+  ]
+}
+{% endschema %}

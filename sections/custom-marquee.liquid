@@ -1,0 +1,43 @@
+<div style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }}; padding: 12px 0; overflow: hidden; white-space: nowrap; border-bottom: 1px solid #000;">
+  <div style="display: inline-block; animation: marquee 15s linear infinite; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">
+    {{ section.settings.marquee_text }} &nbsp;&nbsp;&nbsp;&nbsp; {{ section.settings.marquee_text }} &nbsp;&nbsp;&nbsp;&nbsp; {{ section.settings.marquee_text }} &nbsp;&nbsp;&nbsp;&nbsp; {{ section.settings.marquee_text }}
+  </div>
+</div>
+
+<style>
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Custom Marquee",
+  "settings": [
+    {
+      "type": "text",
+      "id": "marquee_text",
+      "label": "Marquee Text",
+      "default": "FREE SHIPPING ON ALL ORDERS OVER $100"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Marquee"
+    }
+  ]
+}
+{% endschema %}
