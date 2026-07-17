@@ -11,10 +11,109 @@
   "sections": {
     "main": {
       "type": "hello-world",
+      "disabled": true,
       "settings": {}
+    },
+    "premium_hero_rVeLLz": {
+      "type": "premium-hero",
+      "name": "Premium Hero",
+      "settings": {
+        "video_url": "",
+        "overlay_opacity": 30,
+        "subheading": "New Season",
+        "heading": "Autumn Collection",
+        "btn_label": "Shop Now",
+        "btn_link": "",
+        "page_width": "full",
+        "page_margin": 0,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "premium_featured_grid_ac74tb": {
+      "type": "premium-featured-grid",
+      "name": "Premium Featured Grid",
+      "settings": {
+        "heading": "Nos Produits",
+        "text_alignment": "center",
+        "view_all_text": "Voir Tout",
+        "view_all_link": "",
+        "collection": "",
+        "products_to_show": 4,
+        "scroll_animation": "fade-up",
+        "hover_animation": "zoom-image",
+        "image_ratio": "portrait",
+        "image_shape": "rounded",
+        "card_border_radius": 16,
+        "grid_gap": 32,
+        "bg_color": "#ffffff",
+        "text_color": "#024158",
+        "accent_color": "#B80000",
+        "price_color": "#666666",
+        "badge_bg_color": "#B80000",
+        "badge_text_color": "#ffffff",
+        "page_width": "wide",
+        "edge_spacing": 40,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "premium_logo_scroller_Knpkp6": {
+      "type": "premium-logo-scroller",
+      "blocks": {
+        "logo_UHQF8p": {
+          "type": "logo",
+          "settings": {}
+        },
+        "logo_FXegDY": {
+          "type": "logo",
+          "settings": {}
+        },
+        "logo_Lek7QU": {
+          "type": "logo",
+          "settings": {}
+        },
+        "logo_fcyAPf": {
+          "type": "logo",
+          "settings": {}
+        },
+        "logo_MxExbE": {
+          "type": "logo",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "logo_UHQF8p",
+        "logo_FXegDY",
+        "logo_Lek7QU",
+        "logo_fcyAPf",
+        "logo_MxExbE"
+      ],
+      "name": "Animated Logo Scroller",
+      "settings": {
+        "subheading": "Nos Partenaires",
+        "heading": "Découvrez Nos Marques",
+        "scroll_speed": 30,
+        "grayscale_hover": true,
+        "bg_color": "#f9fafb",
+        "text_color": "#111111",
+        "page_width": "full",
+        "page_margin": 0,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "premium_hero_rVeLLz",
+    "premium_featured_grid_ac74tb",
+    "premium_logo_scroller_Knpkp6"
   ]
 }
