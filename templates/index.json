@@ -18,8 +18,9 @@
       "type": "premium-hero",
       "name": "Premium Hero",
       "settings": {
+        "image": "shopify://shop_images/magnific_wide-hero-banner-for-ac-f_Piw7Rw542C.png",
         "video_url": "",
-        "overlay_opacity": 30,
+        "overlay_opacity": 50,
         "subheading": "New Season",
         "heading": "Autumn Collection",
         "btn_label": "Shop Now",
@@ -67,23 +68,33 @@
       "blocks": {
         "logo_UHQF8p": {
           "type": "logo",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/versace-medusa-seeklogo.png"
+          }
         },
         "logo_FXegDY": {
           "type": "logo",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Zara-Logo.png"
+          }
         },
         "logo_Lek7QU": {
           "type": "logo",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Hugo-Boss-Logo.png"
+          }
         },
         "logo_fcyAPf": {
           "type": "logo",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Chanel-logo.png"
+          }
         },
         "logo_MxExbE": {
           "type": "logo",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Ralph-Lauren-Symbol.png"
+          }
         }
       },
       "block_order": [
