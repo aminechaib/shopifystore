@@ -13,10 +13,41 @@
   "sections": {
     "header": {
       "type": "header",
-      "settings": {}
+      "disabled": true,
+      "settings": {
+        "menu": "",
+        "customer_account_menu": "customer-account-main-menu"
+      }
+    },
+    "premium_header_rXtXjb": {
+      "type": "premium-header",
+      "name": "Premium Header",
+      "settings": {
+        "logo_width": 100,
+        "menu": "main-menu",
+        "show_button": true,
+        "button_text": "Nous Contacter",
+        "button_link": "",
+        "page_width": "full",
+        "edge_spacing": 40,
+        "menu_spacing": 48,
+        "icon_spacing": 24,
+        "link_hover_style": "split",
+        "scroll_behavior": "glass",
+        "bg_color_top": "transparent",
+        "text_color_top": "#ffffff",
+        "bg_color_scrolled": "rgba(255, 255, 255, 0.9)",
+        "text_color_scrolled": "#024158",
+        "accent_color": "#B80000",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "padding_top": 25,
+        "padding_bottom": 25
+      }
     }
   },
   "order": [
-    "header"
-  ],
+    "header",
+    "premium_header_rXtXjb"
+  ]
 }
