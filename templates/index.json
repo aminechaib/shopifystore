@@ -63,15 +63,67 @@
         "padding_bottom": 80
       }
     },
-    "blocks_TrLBmq": {
-      "type": "_blocks",
-      "name": "Premium logo scroller",
-      "settings": {}
+    "premium_logo_scroller_DCFAQp": {
+      "type": "premium-logo-scroller",
+      "blocks": {
+        "logo_HdK7K3": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/Hugo-Boss-Logo.png"
+          }
+        },
+        "logo_F7M3Dp": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/Zara-Logo.png"
+          }
+        },
+        "logo_MPY8zA": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/Chanel-logo.png"
+          }
+        },
+        "logo_6ti3Nh": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/Ralph-Lauren-Symbol.png"
+          }
+        },
+        "logo_rGKFwg": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/Zara-Logo.png"
+          }
+        }
+      },
+      "block_order": [
+        "logo_HdK7K3",
+        "logo_F7M3Dp",
+        "logo_MPY8zA",
+        "logo_6ti3Nh",
+        "logo_rGKFwg"
+      ],
+      "name": "Animated Logo Scroller",
+      "settings": {
+        "subheading": "Nos Partenaires",
+        "heading": "Découvrez Nos Marques",
+        "scroll_speed": 30,
+        "grayscale_hover": true,
+        "bg_color": "#f9fafb",
+        "text_color": "#111111",
+        "page_width": "full",
+        "page_margin": 0,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
     }
   },
   "order": [
     "premium_hero_advanced_jB4KYr",
     "premium_featured_grid_gTDHHp",
-    "blocks_TrLBmq"
+    "premium_logo_scroller_DCFAQp"
   ]
 }
