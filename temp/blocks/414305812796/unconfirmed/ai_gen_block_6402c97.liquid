@@ -1,0 +1,559 @@
+{% doc %}
+  @prompt
+    Enhance the existing premium hero section to be more modern and creative for an automotive spare parts store. The current hero has: subheading "New Season", heading "Autumn Collection", a "Shop Now" button, a background image with 50% dark overlay, and full-width layout.
+    
+    Upgrade it with:
+    - A bold, cinematic full-screen hero layout with the background image taking full viewport height
+    - A dramatic animated text reveal — the heading should animate in with a split-word or character stagger effect on page load
+    - A glowing or gradient accent line/divider between the subheading and heading (e.g. a thin neon red or orange line that pulses subtly)
+    - The subheading styled as an uppercase tracked letter-spacing badge or label (e.g. pill shape with a subtle border)
+    - The heading in a large, bold, modern sans-serif font with a slight text shadow or outline effect for depth
+    - A CTA button with a sleek hover animation — e.g. a sliding fill effect or border sweep, in a bold accent color (red or orange)
+    - A subtle parallax scroll effect on the background image
+    - A dark gradient overlay (bottom-heavy) instead of a flat opacity overlay, to make text pop
+    - Optional: a small animated scroll indicator arrow at the bottom center of the hero
+    - All settings (heading, subheading, button label/link, image, overlay intensity) should remain customizable via theme editor settings
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-cinematic-hero-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-cinematic-hero-bg-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .ai-cinematic-hero-bg-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.1);
+    transition: transform 0.1s ease-out;
+  }
+
+  .ai-cinematic-hero-bg-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-cinematic-hero-bg-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 600px;
+    max-height: 600px;
+    opacity: 0.3;
+  }
+
+  .ai-cinematic-hero-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, {{ block.settings.overlay_opacity_top | divided_by: 100.0 }}) 0%,
+      rgba(0, 0, 0, {{ block.settings.overlay_opacity_bottom | divided_by: 100.0 }}) 100%
+    );
+    z-index: 2;
+  }
+
+  .ai-cinematic-hero-content-{{ ai_gen_id }} {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    color: {{ block.settings.text_color }};
+    max-width: 1200px;
+    padding: 0 40px;
+  }
+
+  .ai-cinematic-hero-subheading-{{ ai_gen_id }} {
+    display: inline-block;
+    font-size: {{ block.settings.subheading_size }}px;
+    text-transform: uppercase;
+    letter-spacing: {{ block.settings.subheading_letter_spacing }}px;
+    font-weight: 600;
+    padding: 10px 24px;
+    border: 2px solid {{ block.settings.accent_color }};
+    border-radius: 50px;
+    margin-bottom: 30px;
+    opacity: 0;
+    animation: ai-cinematic-hero-fade-in-{{ ai_gen_id }} 1s ease-out 0.3s forwards;
+  }
+
+  .ai-cinematic-hero-divider-{{ ai_gen_id }} {
+    width: {{ block.settings.divider_width }}px;
+    height: {{ block.settings.divider_height }}px;
+    background: {{ block.settings.accent_color }};
+    margin: 0 auto 30px;
+    border-radius: 2px;
+    opacity: 0;
+    animation: ai-cinematic-hero-divider-glow-{{ ai_gen_id }} 2s ease-in-out infinite,
+               ai-cinematic-hero-fade-in-{{ ai_gen_id }} 1s ease-out 0.6s forwards;
+    box-shadow: 0 0 20px {{ block.settings.accent_color }};
+  }
+
+  .ai-cinematic-hero-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin: 0 0 40px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+  }
+
+  .ai-cinematic-hero-heading-word-{{ ai_gen_id }} {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(100px);
+  }
+
+  .ai-cinematic-hero-button-{{ ai_gen_id }} {
+    position: relative;
+    display: inline-block;
+    padding: 18px 48px;
+    font-size: {{ block.settings.button_size }}px;
+    font-weight: 700;
+    text-decoration: none;
+    color: {{ block.settings.button_text_color }};
+    background-color: transparent;
+    border: 3px solid {{ block.settings.accent_color }};
+    border-radius: {{ block.settings.button_border_radius }}px;
+    overflow: hidden;
+    z-index: 1;
+    transition: color 0.4s ease;
+    opacity: 0;
+    animation: ai-cinematic-hero-fade-in-{{ ai_gen_id }} 1s ease-out 1.2s forwards;
+  }
+
+  .ai-cinematic-hero-button-{{ ai_gen_id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: {{ block.settings.accent_color }};
+    z-index: -1;
+    transition: left 0.4s ease;
+  }
+
+  .ai-cinematic-hero-button-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.button_hover_text_color }};
+  }
+
+  .ai-cinematic-hero-button-{{ ai_gen_id }}:hover::before {
+    left: 0;
+  }
+
+  .ai-cinematic-hero-scroll-indicator-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    opacity: 0;
+    animation: ai-cinematic-hero-fade-in-{{ ai_gen_id }} 1s ease-out 1.5s forwards,
+               ai-cinematic-hero-bounce-{{ ai_gen_id }} 2s ease-in-out 2.5s infinite;
+  }
+
+  .ai-cinematic-hero-scroll-arrow-{{ ai_gen_id }} {
+    width: 30px;
+    height: 30px;
+    border-left: 3px solid {{ block.settings.text_color }};
+    border-bottom: 3px solid {{ block.settings.text_color }};
+    transform: rotate(-45deg);
+  }
+
+  @keyframes ai-cinematic-hero-fade-in-{{ ai_gen_id }} {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes ai-cinematic-hero-divider-glow-{{ ai_gen_id }} {
+    0%, 100% {
+      box-shadow: 0 0 20px {{ block.settings.accent_color }};
+    }
+    50% {
+      box-shadow: 0 0 40px {{ block.settings.accent_color }},
+                  0 0 60px {{ block.settings.accent_color }};
+    }
+  }
+
+  @keyframes ai-cinematic-hero-bounce-{{ ai_gen_id }} {
+    0%, 100% {
+      transform: translateX(-50%) translateY(0);
+    }
+    50% {
+      transform: translateX(-50%) translateY(10px);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-cinematic-hero-{{ ai_gen_id }} {
+      min-height: 500px;
+    }
+
+    .ai-cinematic-hero-content-{{ ai_gen_id }} {
+      padding: 0 20px;
+    }
+
+    .ai-cinematic-hero-subheading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subheading_size | times: 0.8 }}px;
+      padding: 8px 16px;
+    }
+
+    .ai-cinematic-hero-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.5 }}px;
+    }
+
+    .ai-cinematic-hero-button-{{ ai_gen_id }} {
+      padding: 14px 32px;
+      font-size: {{ block.settings.button_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<cinematic-hero-{{ ai_gen_id }}
+  class="ai-cinematic-hero-{{ ai_gen_id }}"
+  data-parallax-speed="{{ block.settings.parallax_speed }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-cinematic-hero-bg-{{ ai_gen_id }}">
+    {% if block.settings.background_image %}
+      <img
+        src="{{ block.settings.background_image | image_url: width: 2400 }}"
+        alt="{{ block.settings.background_image.alt | escape }}"
+        loading="eager"
+        width="{{ block.settings.background_image.width }}"
+        height="{{ block.settings.background_image.height }}"
+      >
+    {% else %}
+      <div class="ai-cinematic-hero-bg-placeholder-{{ ai_gen_id }}">
+        {{ 'hero-apparel-1' | placeholder_svg_tag }}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="ai-cinematic-hero-overlay-{{ ai_gen_id }}"></div>
+
+  <div class="ai-cinematic-hero-content-{{ ai_gen_id }}">
+    {% if block.settings.subheading != blank %}
+      <div class="ai-cinematic-hero-subheading-{{ ai_gen_id }}">
+        {{ block.settings.subheading }}
+      </div>
+    {% endif %}
+
+    {% if block.settings.show_divider %}
+      <div class="ai-cinematic-hero-divider-{{ ai_gen_id }}"></div>
+    {% endif %}
+
+    {% if block.settings.heading != blank %}
+      <h1 class="ai-cinematic-hero-heading-{{ ai_gen_id }}" data-split-text>
+        {{ block.settings.heading }}
+      </h1>
+    {% endif %}
+
+    {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+      <a
+        href="{{ block.settings.button_link }}"
+        class="ai-cinematic-hero-button-{{ ai_gen_id }}"
+      >
+        {{ block.settings.button_label }}
+      </a>
+    {% endif %}
+  </div>
+
+  {% if block.settings.show_scroll_indicator %}
+    <div class="ai-cinematic-hero-scroll-indicator-{{ ai_gen_id }}">
+      <div class="ai-cinematic-hero-scroll-arrow-{{ ai_gen_id }}"></div>
+    </div>
+  {% endif %}
+</cinematic-hero-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class CinematicHero{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.parallaxSpeed = parseFloat(this.dataset.parallaxSpeed) || 0.5;
+        this.bgImage = this.querySelector('.ai-cinematic-hero-bg-{{ ai_gen_id }} img');
+        this.headingElement = this.querySelector('[data-split-text]');
+      }
+
+      connectedCallback() {
+        this.initParallax();
+        this.initTextAnimation();
+      }
+
+      initParallax() {
+        if (!this.bgImage) return;
+
+        const handleScroll = () => {
+          const scrolled = window.pageYOffset;
+          const heroHeight = this.offsetHeight;
+          
+          if (scrolled <= heroHeight) {
+            const offset = scrolled * this.parallaxSpeed;
+            this.bgImage.style.transform = `scale(1.1) translateY(${offset}px)`;
+          }
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+      }
+
+      initTextAnimation() {
+        if (!this.headingElement) return;
+
+        const text = this.headingElement.textContent.trim();
+        const words = text.split(' ');
+        
+        this.headingElement.innerHTML = '';
+        
+        words.forEach((word, wordIndex) => {
+          const wordSpan = document.createElement('span');
+          wordSpan.className = 'ai-cinematic-hero-heading-word-{{ ai_gen_id }}';
+          wordSpan.textContent = word;
+          wordSpan.style.animation = `ai-cinematic-hero-word-reveal-{{ ai_gen_id }} 0.8s ease-out ${0.9 + (wordIndex * 0.15)}s forwards`;
+          
+          this.headingElement.appendChild(wordSpan);
+          
+          if (wordIndex < words.length - 1) {
+            this.headingElement.appendChild(document.createTextNode(' '));
+          }
+        });
+
+        const style = document.createElement('style');
+        style.textContent = `
+          @keyframes ai-cinematic-hero-word-reveal-{{ ai_gen_id }} {
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `;
+        document.head.appendChild(style);
+      }
+    }
+
+    customElements.define('cinematic-hero-{{ ai_gen_id }}', CinematicHero{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Cinematic hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "New Season"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Autumn Collection"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity_top",
+      "label": "Overlay opacity (top)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity_bottom",
+      "label": "Overlay opacity (bottom)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "parallax_speed",
+      "label": "Parallax speed",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.5
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#FF4500"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button hover text color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "subheading_letter_spacing",
+      "label": "Subheading letter spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "button_size",
+      "label": "Button size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Button border radius",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Accent divider"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show accent divider",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "divider_width",
+      "label": "Divider width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "divider_height",
+      "label": "Divider height",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Scroll indicator"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_indicator",
+      "label": "Show scroll indicator",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cinematic hero"
+    }
+  ]
+}
+{% endschema %}

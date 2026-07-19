@@ -9,12 +9,48 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "hello-world",
+    "premium_hero_PWd8ad": {
+      "type": "premium-hero",
+      "name": "Premium Hero",
+      "settings": {
+        "video_url": "",
+        "overlay_opacity": 30,
+        "subheading": "New Season",
+        "heading": "Autumn Collection",
+        "btn_label": "Shop Now",
+        "btn_link": "",
+        "page_width": "full",
+        "page_margin": 0,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "custom_section_Lp4tKp": {
+      "type": "custom-section",
+      "blocks": {
+        "group_kww8gR": {
+          "type": "group",
+          "name": "t:general.column",
+          "settings": {
+            "layout_direction": "group--vertical",
+            "alignment": "flex-start",
+            "padding": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "group_kww8gR"
+      ],
+      "disabled": true,
+      "name": "t:general.custom_section",
       "settings": {}
     }
   },
   "order": [
-    "main"
+    "premium_hero_PWd8ad",
+    "custom_section_Lp4tKp"
   ]
 }
