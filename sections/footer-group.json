@@ -11,54 +11,41 @@
   "type": "footer",
   "name": "t:general.footer",
   "sections": {
-    "premium_footer_emyLEi": {
-      "type": "premium-footer",
+    "premium_fashion_footer_QkDXYg": {
+      "type": "premium-fashion-footer",
       "blocks": {
-        "link_list_EEXEQy": {
-          "type": "link_list",
+        "menu_8DybK3": {
+          "type": "menu",
           "settings": {
             "heading": "Shop",
             "menu": ""
           }
         },
-        "link_list_64cFgj": {
-          "type": "link_list",
+        "menu_epi4yX": {
+          "type": "menu",
           "settings": {
             "heading": "Shop",
             "menu": ""
-          }
-        },
-        "newsletter_FDAJJB": {
-          "type": "newsletter",
-          "settings": {
-            "heading": "Join The Club",
-            "text": "Subscribe to receive updates, access to exclusive deals, and more."
           }
         }
       },
       "block_order": [
-        "link_list_EEXEQy",
-        "link_list_64cFgj",
-        "newsletter_FDAJJB"
+        "menu_8DybK3",
+        "menu_epi4yX"
       ],
-      "name": "Premium Footer",
+      "name": "Premium Fashion Footer",
       "settings": {
-        "logo": "shopify://shop_images/Gemini_Generated_Image_4d93r04d93r04d93-removebg-preview_1.png",
-        "logo_width": 200,
-        "description": "Redefining modern essentials. Quality garments designed for everyday life.",
+        "bg_color": "#000000",
+        "text_color": "#ffffff",
+        "border_color": "#333333",
+        "newsletter_heading": "Join The Club",
+        "newsletter_text": "Inscrivez-vous pour recevoir nos dernières collections et offres exclusives.",
+        "logo_width": 150,
+        "brand_description": "Redefining modern essentials. Quality garments designed for everyday life.",
         "instagram": "",
         "tiktok": "",
         "facebook": "",
-        "bg_color": "#000000",
-        "text_color": "#ffffff",
-        "accent_color": "#666666",
-        "show_payment_icons": true,
-        "page_width": "wide",
-        "edge_spacing": 40,
-        "margin_top": 0,
-        "margin_bottom": 0,
-        "padding_top": 80,
-        "padding_bottom": 40
+        "show_payment_icons": true
       }
     },
     "footer": {
@@ -70,7 +57,7 @@
     }
   },
   "order": [
-    "premium_footer_emyLEi",
+    "premium_fashion_footer_QkDXYg",
     "footer"
   ]
 }
