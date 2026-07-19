@@ -19,7 +19,7 @@
       "name": "Custom Product Grid",
       "settings": {
         "heading": "New Arrivals",
-        "collection": "",
+        "collection": "new-arrivals",
         "product_limit": 4
       }
     }
