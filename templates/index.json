@@ -14,71 +14,6 @@
       "disabled": true,
       "settings": {}
     },
-    "178444977182df911c": {
-      "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_6402c97_krBTQd": {
-          "type": "ai_gen_block_6402c97",
-          "name": "Cinematic hero",
-          "settings": {
-            "subheading": "New Season",
-            "heading": "Autumn Collection",
-            "button_label": "Shop Now",
-            "button_link": "",
-            "overlay_opacity_top": 30,
-            "overlay_opacity_bottom": 70,
-            "parallax_speed": 0.5,
-            "text_color": "#FFFFFF",
-            "accent_color": "#FF4500",
-            "button_text_color": "#FFFFFF",
-            "button_hover_text_color": "#000000",
-            "subheading_size": 14,
-            "subheading_letter_spacing": 2,
-            "heading_size": 80,
-            "button_size": 16,
-            "button_border_radius": 5,
-            "show_divider": true,
-            "divider_width": 100,
-            "divider_height": 4,
-            "show_scroll_indicator": true
-          },
-          "blocks": {}
-        },
-        "ai_gen_block_6402c97_46gNQA": {
-          "type": "ai_gen_block_6402c97",
-          "disabled": true,
-          "settings": {
-            "subheading": "New Season",
-            "heading": "Autumn Collection",
-            "button_label": "Shop Now",
-            "button_link": "",
-            "background_image": "shopify://shop_images/magnific_wide-hero-banner-for-ac-f_Piw7Rw542C.png",
-            "overlay_opacity_top": 30,
-            "overlay_opacity_bottom": 70,
-            "parallax_speed": 0.5,
-            "text_color": "#FFFFFF",
-            "accent_color": "#FF4500",
-            "button_text_color": "#FFFFFF",
-            "button_hover_text_color": "#000000",
-            "subheading_size": 13,
-            "subheading_letter_spacing": 2,
-            "heading_size": 80,
-            "button_size": 16,
-            "button_border_radius": 5,
-            "show_divider": true,
-            "divider_width": 130,
-            "divider_height": 4,
-            "show_scroll_indicator": true
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_6402c97_krBTQd",
-        "ai_gen_block_6402c97_46gNQA"
-      ],
-      "settings": {}
-    },
     "premium_featured_grid_ac74tb": {
       "type": "premium-featured-grid",
       "name": "Premium Featured Grid",
@@ -131,12 +66,12 @@
             "grayscale_opacity": 0.5,
             "show_fade": true,
             "fade_width": 100,
-            "background_color": "#FFFFFF",
+            "background_color": "#ffffff",
             "section_padding": 50,
             "show_top_border": false,
             "show_bottom_border": false,
             "border_width": 1,
-            "border_color": "#E5E5E5"
+            "border_color": "#e5e5e5"
           },
           "blocks": {}
         }
@@ -145,12 +80,32 @@
         "ai_gen_block_68cdb43_rmwPHy"
       ],
       "settings": {}
+    },
+    "custom_section_Lp4tKp": {
+      "type": "custom-section",
+      "blocks": {
+        "group_kww8gR": {
+          "type": "group",
+          "name": "t:general.column",
+          "settings": {
+            "layout_direction": "group--vertical",
+            "alignment": "flex-start",
+            "padding": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "group_kww8gR"
+      ],
+      "name": "t:general.custom_section",
+      "settings": {}
     }
   },
   "order": [
     "main",
-    "178444977182df911c",
     "premium_featured_grid_ac74tb",
-    "1784450006a56467fb"
+    "1784450006a56467fb",
+    "custom_section_Lp4tKp"
   ]
 }
