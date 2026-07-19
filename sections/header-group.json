@@ -23,6 +23,7 @@
       "type": "premium-header",
       "name": "Premium Header",
       "settings": {
+        "logo": "shopify://shop_images/Gemini_Generated_Image_4d93r04d93r04d93-removebg-preview_1.png",
         "logo_width": 100,
         "menu": "main-menu",
         "show_button": true,
@@ -34,8 +35,8 @@
         "icon_spacing": 24,
         "link_hover_style": "split",
         "scroll_behavior": "glass",
-        "bg_color_top": "transparent",
-        "text_color_top": "#ffffff",
+        "bg_color_top": "#FFFFFF",
+        "text_color_top": "#000000",
         "bg_color_scrolled": "rgba(255, 255, 255, 0.9)",
         "text_color_scrolled": "#024158",
         "accent_color": "#B80000",
