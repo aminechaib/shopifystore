@@ -1,0 +1,374 @@
+{%- style -%}
+  #PremiumFashionFooter-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    border-top: 1px solid {{ section.settings.border_color }};
+    --footer-text: {{ section.settings.text_color }};
+    --footer-border: {{ section.settings.border_color }};
+    --footer-muted: {{ section.settings.text_color | color_modify: 'alpha', 0.6 }};
+  }
+{%- endstyle -%}
+
+<footer id="PremiumFashionFooter-{{ section.id }}" class="pff-wrapper">
+  
+  <!-- TOP SECTION: Huge Newsletter -->
+  <div class="pff-newsletter-section">
+    <div class="pff-newsletter-content">
+      <h2 class="pff-newsletter-title">{{ section.settings.newsletter_heading }}</h2>
+      <p class="pff-newsletter-desc">{{ section.settings.newsletter_text }}</p>
+      
+      {%- form 'customer', id: 'FashionFooterNewsletter', class: 'pff-form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="pff-input-wrapper">
+          <input 
+            type="email" 
+            name="contact[email]" 
+            class="pff-input" 
+            value="{{ form.email }}" 
+            placeholder="Entrez votre adresse email" 
+            required
+          >
+          <button type="submit" class="pff-submit-btn">S'inscrire</button>
+        </div>
+        {%- if form.posted_successfully? -%}
+          <p class="pff-success">Merci pour votre inscription !</p>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+
+  <!-- MIDDLE SECTION: Links & Logo spread to the edges -->
+  <div class="pff-main-nav">
+    
+    <!-- Left: Logo & Brand -->
+    <div class="pff-brand-col">
+      <a href="{{ routes.root_url }}" class="pff-logo-link">
+        {%- if section.settings.logo != blank -%}
+          <img src="{{ section.settings.logo | img_url: 'master' }}" alt="{{ shop.name }}" style="max-width: {{ section.settings.logo_width }}px;" class="pff-logo">
+        {%- else -%}
+          <span class="pff-logo-text">{{ shop.name }}</span>
+        {%- endif -%}
+      </a>
+      <p class="pff-brand-desc">{{ section.settings.brand_description }}</p>
+    </div>
+
+    <!-- Right: Menus -->
+    <div class="pff-menus-col">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'menu' -%}
+          <div class="pff-menu" {{ block.shopify_attributes }}>
+            <h4 class="pff-menu-title">{{ block.settings.heading }}</h4>
+            <ul class="pff-menu-list">
+              {%- for link in linklists[block.settings.menu].links -%}
+                <li><a href="{{ link.url }}" class="pff-menu-link">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+  </div>
+
+  <!-- BOTTOM SECTION: Socials, Copyright, Payments -->
+  <div class="pff-bottom-bar">
+    
+    <div class="pff-socials">
+      {%- if section.settings.instagram != blank -%}
+        <a href="{{ section.settings.instagram }}" target="_blank">Instagram</a>
+      {%- endif -%}
+      {%- if section.settings.tiktok != blank -%}
+        <a href="{{ section.settings.tiktok }}" target="_blank">TikTok</a>
+      {%- endif -%}
+      {%- if section.settings.facebook != blank -%}
+        <a href="{{ section.settings.facebook }}" target="_blank">Facebook</a>
+      {%- endif -%}
+    </div>
+
+    <div class="pff-copyright">
+      &copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. Tous droits réservés.
+    </div>
+
+    <div class="pff-payments">
+      {%- if section.settings.show_payment_icons -%}
+        {%- for type in shop.enabled_payment_types -%}
+          {{ type | payment_type_svg_tag: class: 'pff-pay-icon' }}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+  </div>
+</footer>
+
+<style>
+  /* --- Ultra-Premium Fashion Footer CSS --- */
+  .pff-wrapper {
+    width: 100%;
+    font-family: 'Helvetica Neue', sans-serif;
+    overflow: hidden;
+  }
+
+  /* 1. Newsletter Section */
+  .pff-newsletter-section {
+    padding: 6rem 4rem;
+    border-bottom: 1px solid var(--footer-border);
+    text-align: center;
+  }
+  .pff-newsletter-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .pff-newsletter-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 1rem 0;
+    color: var(--footer-text);
+  }
+  .pff-newsletter-desc {
+    font-size: 1rem;
+    color: var(--footer-muted);
+    margin: 0 0 2.5rem 0;
+  }
+  .pff-input-wrapper {
+    display: flex;
+    border-bottom: 2px solid var(--footer-text);
+    padding-bottom: 0.5rem;
+  }
+  .pff-input {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    color: var(--footer-text);
+    font-size: 1rem;
+    outline: none;
+  }
+  .pff-input::placeholder { color: var(--footer-muted); }
+  .pff-submit-btn {
+    background: transparent;
+    border: none;
+    color: var(--footer-text);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    padding: 0 1rem;
+    transition: opacity 0.3s ease;
+  }
+  .pff-submit-btn:hover { opacity: 0.5; }
+  .pff-success { color: #10B981; margin-top: 1rem; font-size: 0.9rem; }
+
+  /* 2. Main Nav Section (Pushed to edges) */
+  .pff-main-nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 5rem 4rem;
+    flex-wrap: wrap;
+    gap: 4rem;
+  }
+  
+  .pff-brand-col {
+    max-width: 350px;
+  }
+  .pff-logo-link { text-decoration: none; display: block; margin-bottom: 1.5rem; }
+  .pff-logo { display: block; height: auto; }
+  .pff-logo-text { font-size: 2rem; font-weight: 700; text-transform: uppercase; color: var(--footer-text); letter-spacing: 0.05em; }
+  .pff-brand-desc { color: var(--footer-muted); line-height: 1.6; font-size: 0.95rem; }
+
+  .pff-menus-col {
+    display: flex;
+    gap: 6rem;
+    flex-wrap: wrap;
+  }
+  .pff-menu-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 1.5rem 0;
+    color: var(--footer-text);
+  }
+  .pff-menu-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1rem; }
+  .pff-menu-link {
+    color: var(--footer-muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+  .pff-menu-link::after {
+    content: ''; position: absolute; bottom: -3px; left: 0; width: 100%; height: 1px;
+    background: var(--footer-text); transform: scaleX(0); transform-origin: right; transition: transform 0.4s ease;
+  }
+  .pff-menu-link:hover { color: var(--footer-text); }
+  .pff-menu-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+  /* 3. Bottom Bar */
+  .pff-bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4rem;
+    border-top: 1px solid var(--footer-border);
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  
+  .pff-socials { display: flex; gap: 2rem; }
+  .pff-socials a {
+    color: var(--footer-text);
+    text-decoration: none;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    transition: opacity 0.3s ease;
+  }
+  .pff-socials a:hover { opacity: 0.5; }
+
+  .pff-copyright {
+    color: var(--footer-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .pff-payments { display: flex; gap: 0.5rem; }
+  .pff-pay-icon { width: 38px; height: 24px; filter: grayscale(100%); opacity: 0.6; transition: all 0.3s ease; }
+  .pff-pay-icon:hover { filter: grayscale(0%); opacity: 1; }
+
+  /* Responsive */
+  @media (max-width: 990px) {
+    .pff-newsletter-section { padding: 4rem 2rem; }
+    .pff-main-nav { padding: 4rem 2rem; flex-direction: column; gap: 3rem; }
+    .pff-menus-col { gap: 3rem; flex-direction: column; }
+    .pff-bottom-bar { padding: 2rem; flex-direction: column; text-align: center; justify-content: center; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Premium Fashion Footer",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors (Black & White Theme)"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter Section"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Heading",
+      "default": "Join The Club"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Description",
+      "default": "Inscrivez-vous pour recevoir nos dernières collections et offres exclusives."
+    },
+    {
+      "type": "header",
+      "content": "Brand & Logo (Left Side)"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50, "max": 300, "step": 5, "unit": "px",
+      "label": "Logo Width",
+      "default": 150
+    },
+    {
+      "type": "textarea",
+      "id": "brand_description",
+      "label": "Brand Description",
+      "default": "Redefining modern essentials. Quality garments designed for everyday life."
+    },
+    {
+      "type": "header",
+      "content": "Social Media Links"
+    },
+    {
+      "type": "url",
+      "id": "instagram",
+      "label": "Instagram Link"
+    },
+    {
+      "type": "url",
+      "id": "tiktok",
+      "label": "TikTok Link"
+    },
+    {
+      "type": "url",
+      "id": "facebook",
+      "label": "Facebook Link"
+    },
+    {
+      "type": "header",
+      "content": "Bottom Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show Payment Icons",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Select Menu"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Premium Fashion Footer",
+      "blocks": [
+        { "type": "menu" },
+        { "type": "menu" }
+      ]
+    }
+  ]
+}
+{% endschema %}
