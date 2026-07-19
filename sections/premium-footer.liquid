@@ -140,17 +140,28 @@
     border-top: 1px solid var(--pf-border);
   }
   
+  /* We use Flexbox instead of Grid to push items to the absolute edges */
   .pf-grid { 
-    display: grid; 
-    grid-template-columns: 1fr; 
+    display: flex; 
+    flex-wrap: wrap;
+    justify-content: space-between; /* This is the magic rule that pushes them to the sides */
     gap: 3rem; 
   }
   
-  @media (min-width: 768px) { 
-    .pf-grid { grid-template-columns: repeat(2, 1fr); } 
+  .pf-column {
+    flex: 1 1 200px; /* Allows the middle link columns to size themselves evenly */
   }
-  @media (min-width: 1024px) { 
-    .pf-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4rem; } 
+
+  /* Make the first column (Brand Info) wider so it anchors the left side */
+  .pf-column:first-child {
+    flex: 2 1 300px;
+    max-width: 400px;
+  }
+
+  /* Make the last column (Newsletter) wider so it anchors the right side */
+  .pf-column:last-child {
+    flex: 1.5 1 300px;
+    max-width: 400px;
   }
 
   /* Brand Info */
