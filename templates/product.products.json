@@ -13,9 +13,19 @@
       "type": "product",
       "disabled": true,
       "settings": {}
+    },
+    "custom_product_grid_KWaPdF": {
+      "type": "custom-product-grid",
+      "name": "Custom Product Grid",
+      "settings": {
+        "heading": "New Arrivals",
+        "collection": "",
+        "product_limit": 4
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "custom_product_grid_KWaPdF"
   ]
 }
