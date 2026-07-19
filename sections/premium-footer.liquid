@@ -38,45 +38,42 @@
     
     <!-- Top Grid -->
     <div class="pf-grid">
-      
-      <!-- Column 1: Brand Info & Logo (Controlled by Main Settings) -->
-      <div class="pf-column pf-brand-col">
-        <div class="pf-brand">
-          {%- if section.settings.logo != blank -%}
-            <img src="{{ section.settings.logo | img_url: 'master' }}" alt="{{ shop.name }}" class="pf-logo" style="max-width: {{ section.settings.logo_width }}px;">
-          {%- else -%}
-            <h3 class="pf-logo-text">{{ shop.name }}</h3>
-          {%- endif -%}
-          
-          {%- if section.settings.description != blank -%}
-            <p class="pf-desc">{{ section.settings.description }}</p>
-          {%- endif -%}
-          
-          <div class="pf-socials">
-            {%- if section.settings.instagram != blank -%}
-              <a href="{{ section.settings.instagram }}" target="_blank" class="pf-social-link" aria-label="Instagram">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-              </a>
-            {%- endif -%}
-            {%- if section.settings.tiktok != blank -%}
-              <a href="{{ section.settings.tiktok }}" target="_blank" class="pf-social-link" aria-label="TikTok">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
-              </a>
-            {%- endif -%}
-            {%- if section.settings.facebook != blank -%}
-              <a href="{{ section.settings.facebook }}" target="_blank" class="pf-social-link" aria-label="Facebook">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-              </a>
-            {%- endif -%}
-          </div>
-        </div>
-      </div>
-
-      <!-- Columns 2+: Menus & Newsletter (Controlled by Blocks) -->
       {%- for block in section.blocks -%}
         <div class="pf-column" {{ block.shopify_attributes }}>
+          
           {%- case block.type -%}
             
+            {%- when 'brand_info' -%}
+              <div class="pf-brand">
+                {%- if block.settings.logo != blank -%}
+                  <img src="{{ block.settings.logo | img_url: 'master' }}" alt="{{ shop.name }}" class="pf-logo" style="max-width: {{ block.settings.logo_width }}px;">
+                {%- else -%}
+                  <h3 class="pf-logo-text">{{ shop.name }}</h3>
+                {%- endif -%}
+                
+                {%- if block.settings.description != blank -%}
+                  <p class="pf-desc">{{ block.settings.description }}</p>
+                {%- endif -%}
+                
+                <div class="pf-socials">
+                  {%- if block.settings.instagram != blank -%}
+                    <a href="{{ block.settings.instagram }}" target="_blank" class="pf-social-link" aria-label="Instagram">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                    </a>
+                  {%- endif -%}
+                  {%- if block.settings.tiktok != blank -%}
+                    <a href="{{ block.settings.tiktok }}" target="_blank" class="pf-social-link" aria-label="TikTok">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                    </a>
+                  {%- endif -%}
+                  {%- if block.settings.facebook != blank -%}
+                    <a href="{{ block.settings.facebook }}" target="_blank" class="pf-social-link" aria-label="Facebook">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                    </a>
+                  {%- endif -%}
+                </div>
+              </div>
+
             {%- when 'link_list' -%}
               <h4 class="pf-heading">{{ block.settings.heading }}</h4>
               <ul class="pf-links">
@@ -143,42 +140,17 @@
     border-top: 1px solid var(--pf-border);
   }
   
-  /* Flexbox Layout to push items to the edges */
-  .pf-grid {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
-  gap: 4rem;
-  align-items: start;
-}
-
-@media (max-width: 991px) {
-  .pf-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
+  .pf-grid { 
+    display: grid; 
+    grid-template-columns: 1fr; 
+    gap: 3rem; 
   }
-}
-
-@media (max-width: 768px) {
-  .pf-grid {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-}
   
-  .pf-column {
-    flex: 1 1 200px;
+  @media (min-width: 768px) { 
+    .pf-grid { grid-template-columns: repeat(2, 1fr); } 
   }
-
-  /* Make the first column (Brand Info) wider so it anchors the left side */
-  .pf-brand-col {
-    flex: 2 1 300px;
-    max-width: 400px;
-  }
-
-  /* Make the last column (Newsletter) wider so it anchors the right side */
-  .pf-column:last-child {
-    flex: 1.5 1 300px;
-    max-width: 400px;
+  @media (min-width: 1024px) { 
+    .pf-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4rem; } 
   }
 
   /* Brand Info */
@@ -224,7 +196,7 @@
   .pf-link:hover { color: var(--pf-text); }
   .pf-link:hover::after { transform: scaleX(1); transform-origin: left; }
 
-  /* Newsletter */
+  /* Newsletter (Minimalist Fashion Style) */
   .pf-input-group {
     display: flex;
     align-items: center;
@@ -319,43 +291,6 @@
   "settings": [
     {
       "type": "header",
-      "content": "Brand Info & Logo"
-    },
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo Image"
-    },
-    {
-      "type": "range",
-      "id": "logo_width",
-      "min": 50, "max": 300, "step": 5, "unit": "px",
-      "label": "Logo Width",
-      "default": 120
-    },
-    {
-      "type": "textarea",
-      "id": "description",
-      "label": "Brand Description",
-      "default": "Redefining modern essentials. Quality garments designed for everyday life."
-    },
-    {
-      "type": "url",
-      "id": "instagram",
-      "label": "Instagram Link"
-    },
-    {
-      "type": "url",
-      "id": "tiktok",
-      "label": "TikTok Link"
-    },
-    {
-      "type": "url",
-      "id": "facebook",
-      "label": "Facebook Link"
-    },
-    {
-      "type": "header",
       "content": "Colors"
     },
     {
@@ -399,7 +334,7 @@
         { "value": "wide", "label": "Wide (1600px)" },
         { "value": "standard", "label": "Standard (1200px)" }
       ],
-      "default": "full"
+      "default": "wide"
     },
     {
       "type": "range",
@@ -438,6 +373,46 @@
     }
   ],
   "blocks": [
+    {
+      "type": "brand_info",
+      "name": "Brand Info & Socials",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo Image (Optional)"
+        },
+        {
+          "type": "range",
+          "id": "logo_width",
+          "min": 50, "max": 200, "step": 5, "unit": "px",
+          "label": "Logo Width",
+          "default": 120
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Redefining modern essentials. Quality garments designed for everyday life."
+        },
+        {
+          "type": "url",
+          "id": "instagram",
+          "label": "Instagram Link"
+        },
+        {
+          "type": "url",
+          "id": "tiktok",
+          "label": "TikTok Link"
+        },
+        {
+          "type": "url",
+          "id": "facebook",
+          "label": "Facebook Link"
+        }
+      ]
+    },
     {
       "type": "link_list",
       "name": "Menu",
@@ -479,6 +454,7 @@
     {
       "name": "Premium Footer",
       "blocks": [
+        { "type": "brand_info" },
         { "type": "link_list" },
         { "type": "link_list" },
         { "type": "newsletter" }
