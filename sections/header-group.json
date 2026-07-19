@@ -21,6 +21,7 @@
     },
     "premium_header_rXtXjb": {
       "type": "premium-header",
+      "disabled": true,
       "name": "Premium Header",
       "settings": {
         "logo": "shopify://shop_images/Gemini_Generated_Image_hr0m3nhr0m3nhr0m_2_5bf1fca6-a65d-4b21-8d7a-f506651c8d2d.png",
@@ -35,11 +36,11 @@
         "icon_spacing": 24,
         "link_hover_style": "split",
         "scroll_behavior": "glass",
-        "bg_color_top": "transparent",
+        "bg_color_top": "rgba(0,0,0,0)",
         "text_color_top": "#ffffff",
-        "bg_color_scrolled": "rgba(255, 255, 255, 0.9)",
+        "bg_color_scrolled": "#ffffffe6",
         "text_color_scrolled": "#024158",
-        "accent_color": "#B80000",
+        "accent_color": "#b80000",
         "margin_top": 0,
         "margin_bottom": 0,
         "padding_top": 25,

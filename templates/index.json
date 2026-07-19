@@ -14,24 +14,41 @@
       "disabled": true,
       "settings": {}
     },
-    "premium_hero_rVeLLz": {
-      "type": "premium-hero",
-      "name": "Premium Hero",
-      "settings": {
-        "image": "shopify://shop_images/magnific_wide-hero-banner-for-ac-f_Piw7Rw542C.png",
-        "video_url": "",
-        "overlay_opacity": 50,
-        "subheading": "New Season",
-        "heading": "Autumn Collection",
-        "btn_label": "Shop Now",
-        "btn_link": "",
-        "page_width": "full",
-        "page_margin": 0,
-        "margin_top": 0,
-        "margin_bottom": 0,
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
+    "178444977182df911c": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_6402c97_46gNQA": {
+          "type": "ai_gen_block_6402c97",
+          "settings": {
+            "subheading": "New Season",
+            "heading": "Autumn Collection",
+            "button_label": "Shop Now",
+            "button_link": "",
+            "background_image": "shopify://shop_images/magnific_wide-hero-banner-for-ac-f_Piw7Rw542C.png",
+            "overlay_opacity_top": 30,
+            "overlay_opacity_bottom": 70,
+            "parallax_speed": 0.5,
+            "text_color": "#FFFFFF",
+            "accent_color": "#FF4500",
+            "button_text_color": "#FFFFFF",
+            "button_hover_text_color": "#000000",
+            "subheading_size": 13,
+            "subheading_letter_spacing": 2,
+            "heading_size": 80,
+            "button_size": 16,
+            "button_border_radius": 5,
+            "show_divider": true,
+            "divider_width": 130,
+            "divider_height": 4,
+            "show_scroll_indicator": true
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_6402c97_46gNQA"
+      ],
+      "settings": {}
     },
     "premium_featured_grid_ac74tb": {
       "type": "premium-featured-grid",
@@ -51,9 +68,9 @@
         "grid_gap": 32,
         "bg_color": "#ffffff",
         "text_color": "#024158",
-        "accent_color": "#B80000",
+        "accent_color": "#b80000",
         "price_color": "#666666",
-        "badge_bg_color": "#B80000",
+        "badge_bg_color": "#b80000",
         "badge_text_color": "#ffffff",
         "page_width": "wide",
         "edge_spacing": 40,
@@ -63,68 +80,48 @@
         "padding_bottom": 80
       }
     },
-    "premium_logo_scroller_Knpkp6": {
-      "type": "premium-logo-scroller",
+    "1784450006a56467fb": {
+      "type": "_blocks",
       "blocks": {
-        "logo_UHQF8p": {
-          "type": "logo",
+        "ai_gen_block_68cdb43_rmwPHy": {
+          "type": "ai_gen_block_68cdb43",
           "settings": {
-            "image": "shopify://shop_images/versace-medusa-seeklogo.png"
-          }
-        },
-        "logo_FXegDY": {
-          "type": "logo",
-          "settings": {
-            "image": "shopify://shop_images/Zara-Logo.png"
-          }
-        },
-        "logo_Lek7QU": {
-          "type": "logo",
-          "settings": {
-            "image": "shopify://shop_images/Hugo-Boss-Logo.png"
-          }
-        },
-        "logo_fcyAPf": {
-          "type": "logo",
-          "settings": {
-            "image": "shopify://shop_images/Chanel-logo.png"
-          }
-        },
-        "logo_MxExbE": {
-          "type": "logo",
-          "settings": {
-            "image": "shopify://shop_images/Ralph-Lauren-Symbol.png"
-          }
+            "logo_1": "shopify://shop_images/Hugo-Boss-Logo.png",
+            "logo_2": "shopify://shop_images/Zara-Logo.png",
+            "logo_3": "shopify://shop_images/Chanel-logo.png",
+            "logo_4": "shopify://shop_images/Ralph-Lauren-Symbol.png",
+            "logo_5": "shopify://shop_images/versace-medusa-seeklogo.png",
+            "scroll_speed": 40,
+            "pause_on_hover": true,
+            "enable_dual_row": false,
+            "row_spacing": 30,
+            "logo_width": 150,
+            "logo_height": 80,
+            "logo_spacing": 60,
+            "grayscale_default": true,
+            "grayscale_opacity": 0.5,
+            "show_fade": true,
+            "fade_width": 100,
+            "background_color": "#FFFFFF",
+            "section_padding": 50,
+            "show_top_border": false,
+            "show_bottom_border": false,
+            "border_width": 1,
+            "border_color": "#E5E5E5"
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "logo_UHQF8p",
-        "logo_FXegDY",
-        "logo_Lek7QU",
-        "logo_fcyAPf",
-        "logo_MxExbE"
+        "ai_gen_block_68cdb43_rmwPHy"
       ],
-      "name": "Animated Logo Scroller",
-      "settings": {
-        "subheading": "Nos Partenaires",
-        "heading": "Découvrez Nos Marques",
-        "scroll_speed": 30,
-        "grayscale_hover": true,
-        "bg_color": "#f9fafb",
-        "text_color": "#111111",
-        "page_width": "full",
-        "page_margin": 0,
-        "margin_top": 0,
-        "margin_bottom": 0,
-        "padding_top": 80,
-        "padding_bottom": 80
-      }
+      "settings": {}
     }
   },
   "order": [
     "main",
-    "premium_hero_rVeLLz",
+    "178444977182df911c",
     "premium_featured_grid_ac74tb",
-    "premium_logo_scroller_Knpkp6"
+    "1784450006a56467fb"
   ]
 }
