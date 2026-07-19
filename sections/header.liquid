@@ -1,77 +1,83 @@
-<header>
-  <h2 class="header__title">
-    {{ shop.name | link_to: routes.root_url }}
-  </h2>
+<header class="custom-header">
+  
+  <!-- LEFT: Navigation Links -->
+  <nav class="header-nav">
+    {%- for link in linklists['main-menu'].links -%}
+      <a href="{{ link.url }}" class="nav-link">{{ link.title }}</a>
+    {%- endfor -%}
+  </nav>
 
-  <div class="header__menu">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
+  <!-- CENTER: Logo / Brand Name -->
+  <div class="header-logo">
+    <a href="{{ routes.root_url }}">{{ shop.name }}</a>
   </div>
 
-  <div class="header__icons">
-    {% if shop.customer_accounts_enabled %}
-      <shopify-account menu="{{ section.settings.customer_account_menu }}">
-        {{ 'icon-account.svg' | inline_asset_content }}
-      </shopify-account>
-    {% endif %}
-
-    <a href="{{ routes.cart_url }}">
-      {% if cart.item_count > 0 %}
-        <sup>{{ cart.item_count }}</sup>
-      {% endif %}
-
-      {{ 'icon-cart.svg' | inline_asset_content }}
+  <!-- RIGHT: Account & Cart -->
+  <div class="header-actions">
+    {%- if shop.customer_accounts_enabled -%}
+      <a href="{{ routes.account_url }}" class="nav-link">Account</a>
+    {%- endif -%}
+    <a href="{{ routes.cart_url }}" class="nav-link">
+      Cart [<span id="cart-count">{{ cart.item_count }}</span>]
     </a>
   </div>
+
 </header>
 
-{% stylesheet %}
-  header {
-    height: 5rem;
+<style>
+  /* Hardcoded CSS - This layout will never break or shift */
+  .custom-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-  }
-  header a {
-    position: relative;
-    text-decoration: none;
-    color: var(--color-foreground);
-    display: flex;
     align-items: center;
-    justify-content: center;
+    padding: 20px 40px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #000000;
+    font-family: 'Helvetica Neue', Helvetica, sans-serif;
   }
-  header a sup {
-    position: absolute;
-    left: 100%;
-    overflow: hidden;
-    max-width: var(--page-margin);
-  }
-  header svg {
-    width: 2rem;
-  }
-  header .header__menu,
-  header .header__icons {
+
+  .header-nav, .header-actions {
     display: flex;
-    gap: 1rem;
+    gap: 30px;
+    flex: 1; /* Forces equal width so the logo stays perfectly centered */
   }
-{% endstylesheet %}
+
+  .header-actions {
+    justify-content: flex-end;
+  }
+
+  .header-logo {
+    flex: 1;
+    text-align: center;
+  }
+
+  .header-logo a {
+    font-size: 24px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-decoration: none;
+    color: #000;
+  }
+
+  .nav-link {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    color: #000;
+    transition: opacity 0.2s ease;
+  }
+
+  .nav-link:hover {
+    opacity: 0.5;
+  }
+</style>
 
 {% schema %}
 {
-  "name": "t:general.header",
-  "settings": [
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
-    },
-    {
-      "type": "link_list",
-      "id": "customer_account_menu",
-      "label": "t:labels.customer_account_menu",
-      "default": "customer-account-main-menu"
-    }
-  ]
+  "name": "Custom Header",
+  "settings": []
 }
 {% endschema %}
