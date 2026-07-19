@@ -9,8 +9,9 @@
  */
 {
   "current": {
-    "max_page_width": "110rem",
+    "max_page_width": "90rem",
     "min_page_margin": 10,
+    "input_corner_radius": 4,
     "content_for_index": []
   }
 }

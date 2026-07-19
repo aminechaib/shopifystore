@@ -11,10 +11,21 @@
   "sections": {
     "main": {
       "type": "product",
+      "disabled": true,
       "settings": {}
+    },
+    "custom_product_grid_fwUVzX": {
+      "type": "custom-product-grid",
+      "name": "Custom Product Grid",
+      "settings": {
+        "heading": "New Arrivals",
+        "collection": "new-arrivals",
+        "product_limit": 4
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "custom_product_grid_fwUVzX"
   ]
 }
