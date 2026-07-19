@@ -32,9 +32,74 @@
         "margin_top": 0,
         "margin_bottom": 0
       }
+    },
+    "premium_featured_grid_gTDHHp": {
+      "type": "premium-featured-grid",
+      "name": "Premium Featured Grid",
+      "settings": {
+        "heading": "Nos Produits",
+        "text_alignment": "center",
+        "view_all_text": "Voir Tout",
+        "view_all_link": "",
+        "collection": "",
+        "products_to_show": 4,
+        "scroll_animation": "fade-up",
+        "hover_animation": "zoom-image",
+        "image_ratio": "portrait",
+        "image_shape": "rounded",
+        "card_border_radius": 16,
+        "grid_gap": 32,
+        "bg_color": "#ffffff",
+        "text_color": "#024158",
+        "accent_color": "#B80000",
+        "price_color": "#666666",
+        "badge_bg_color": "#B80000",
+        "badge_text_color": "#ffffff",
+        "page_width": "wide",
+        "edge_spacing": 40,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "blocks_TrLBmq": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_68cdb43_JPkDAp": {
+          "type": "ai_gen_block_68cdb43",
+          "settings": {
+            "scroll_speed": 40,
+            "pause_on_hover": true,
+            "enable_dual_row": false,
+            "row_spacing": 30,
+            "logo_width": 150,
+            "logo_height": 80,
+            "logo_spacing": 60,
+            "grayscale_default": true,
+            "grayscale_opacity": 0.5,
+            "show_fade": true,
+            "fade_width": 100,
+            "background_color": "#FFFFFF",
+            "section_padding": 50,
+            "show_top_border": false,
+            "show_bottom_border": false,
+            "border_width": 1,
+            "border_color": "#E5E5E5"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_68cdb43_JPkDAp"
+      ],
+      "name": "Premium logo scroller",
+      "settings": {}
     }
   },
   "order": [
-    "premium_hero_advanced_jB4KYr"
+    "premium_hero_advanced_jB4KYr",
+    "premium_featured_grid_gTDHHp",
+    "blocks_TrLBmq"
   ]
 }
