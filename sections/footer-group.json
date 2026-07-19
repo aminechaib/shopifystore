@@ -11,6 +11,61 @@
   "type": "footer",
   "name": "t:general.footer",
   "sections": {
+    "premium_footer_emyLEi": {
+      "type": "premium-footer",
+      "blocks": {
+        "brand_info_tWViyz": {
+          "type": "brand_info",
+          "settings": {
+            "logo_width": 120,
+            "description": "Redefining modern essentials. Quality garments designed for everyday life.",
+            "instagram": "",
+            "tiktok": "",
+            "facebook": ""
+          }
+        },
+        "link_list_EEXEQy": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Shop",
+            "menu": ""
+          }
+        },
+        "link_list_64cFgj": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Shop",
+            "menu": ""
+          }
+        },
+        "newsletter_FDAJJB": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Join The Club",
+            "text": "Subscribe to receive updates, access to exclusive deals, and more."
+          }
+        }
+      },
+      "block_order": [
+        "brand_info_tWViyz",
+        "link_list_EEXEQy",
+        "link_list_64cFgj",
+        "newsletter_FDAJJB"
+      ],
+      "name": "Premium Footer",
+      "settings": {
+        "bg_color": "#000000",
+        "text_color": "#ffffff",
+        "accent_color": "#666666",
+        "show_payment_icons": true,
+        "page_width": "wide",
+        "edge_spacing": 40,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "padding_top": 80,
+        "padding_bottom": 40
+      }
+    },
     "footer": {
       "type": "footer",
       "settings": {
@@ -20,6 +75,7 @@
     }
   },
   "order": [
+    "premium_footer_emyLEi",
     "footer"
   ]
 }
