@@ -140,19 +140,19 @@
     border-top: 1px solid var(--pf-border);
   }
   
-  .pf-grid { 
-    display: grid; 
-    grid-template-columns: 1fr; 
-    gap: 3rem; 
+  @media (max-width: 1024px) {
+  .pf-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
   }
-  
-  @media (min-width: 768px) { 
-    .pf-grid { grid-template-columns: repeat(2, 1fr); } 
-  }
-  @media (min-width: 1024px) { 
-    .pf-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4rem; } 
-  }
+}
 
+@media (max-width: 768px) {
+  .pf-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
   /* Brand Info */
   .pf-logo { display: block; margin-bottom: 1.5rem; height: auto; }
   .pf-logo-text { font-size: 1.5rem; font-weight: 700; margin: 0 0 1.5rem 0; text-transform: uppercase; letter-spacing: 0.05em; }
