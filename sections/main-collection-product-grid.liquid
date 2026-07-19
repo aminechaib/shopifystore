@@ -1,0 +1,66 @@
+{%- paginate collection.products by 16 -%}
+
+<div style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+  
+  <!-- Catalog Header -->
+  <header style="text-align: center; margin-bottom: 40px;">
+    <h1 style="text-transform: uppercase; font-weight: 700; letter-spacing: 2px;">
+      {{ collection.title | default: 'Catalog' }}
+    </h1>
+    <p style="color: #666; font-size: 14px;">
+      Showing {{ collection.all_products_count }} items
+    </p>
+  </header>
+
+  <!-- Product Grid -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px;">
+    
+    {%- for product in collection.products -%}
+      <a href="{{ product.url }}" style="text-decoration: none; color: #000; display: block;">
+        
+        <!-- Image -->
+        <div style="background: #f4f4f4; aspect-ratio: 3/4; overflow: hidden; margin-bottom: 15px; position: relative;">
+          {% if product.featured_image %}
+            <img src="{{ product.featured_image | img_url: '600x' }}" alt="{{ product.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+          {% else %}
+            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #eee;">No Image</div>
+          {% endif %}
+          
+          <!-- Sold Out Badge Logic -->
+          {% unless product.available %}
+            <span style="position: absolute; top: 10px; left: 10px; background: #000; color: #fff; padding: 4px 8px; font-size: 10px; text-transform: uppercase; font-weight: bold;">Sold Out</span>
+          {% endunless %}
+        </div>
+
+        <!-- Details -->
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 700; text-transform: uppercase;">
+          <span>{{ product.title }}</span>
+          <span>{{ product.price | money }}</span>
+        </div>
+        
+      </a>
+    {%- else -%}
+      <div style="grid-column: 1 / -1; text-align: center; padding: 50px 0;">
+        <p>No products found in this collection.</p>
+      </div>
+    {%- endfor -%}
+
+  </div>
+
+  <!-- Pagination -->
+  {%- if paginate.pages > 1 -%}
+    <div style="margin-top: 50px; text-align: center; font-family: monospace; font-size: 16px;">
+      {{ paginate | default_pagination: next: 'Next &rarr;', previous: '&larr; Prev' }}
+    </div>
+  {%- endif -%}
+
+</div>
+
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Product Grid",
+  "settings": []
+}
+{% endschema %}
